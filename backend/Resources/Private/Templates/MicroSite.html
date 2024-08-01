@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="{{ baseUrl }}/microsite.css">
 </head>
 <body id="body" class="font-family__{{ fontFamily }}" style="background-color: {{ bgColor }}; color: {{ textColor }}">
+<!-- It's difficult to pass a JSON string into an attribute, i was bored so i made a workaounrd by adding pipe calls -->
+<!-- pipe calls are calling an php function before inserting the variable. eachPipe attribute reverse it before using it -->
 <mms:forEach each="{{ elements | base64_encode }}" let="element" index="myIndex" eachPipe="base64_decode">
   <mms:if condition="'{{ element.type.value }}' == 'headline'">
     <h{{ element.element.layout }}>{{ element.element.value }}</h{{ element.element.layout }}>
