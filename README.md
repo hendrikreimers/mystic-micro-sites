@@ -10,12 +10,11 @@ Mystic Micro Sites is a secure and efficient platform for creating mini-websites
 - **Advanced Encryption**: Utilizes a combination of public/private key encryption, symmetric encryption, and Argon2ID hashing for secure data management.
 - **JWT Authentication**: Employs JSON Web Tokens for secure API interactions.
 - **Rate Limiting and CSRF Protection**: Implements safeguards against misuse and attacks.
-- **Custom Template Engine**: Facilitates flexible site design with dynamic content rendering.
 - **Automatic Password Management**: Generates and embeds unique passwords in URLs for secure site access.
 - **Master Password Recovery**: Allows site recovery using a master password stored on the server.
 - **NFC Tag Integration**: Enables NFC tags to link physical objects to digital content, providing an interactive way to access site details.
 - **Modular Codebase**: Designed for easy extension and customization, making it suitable for various development needs.
-- **Custom Template Engine**: Small high functional Template Engine build from scratch.
+- **Custom Template Engine**: Small high functional Template Engine for dynamic contet rendering, build from scratch.
 
 ## Installation
 
@@ -113,7 +112,9 @@ Mystic Micro Sites is a secure and efficient platform for creating mini-websites
 - **Extended Plugin System**: Develop a plugin system for additional features and integrations.
 - **Testing and CI/CD**: Integrate continuous testing and deployment workflows for automated quality assurance.
 - **Advanced Analytics**: Implement analytics to track user interactions and improve user engagement.
-
+- **Time Limit**: Time limited access for microsites.
+- **Obfuscation**: Obfuscation the main URL, so it's not accessible by reload.
+- 
 ## Contribution
 
 Contributions are encouraged! Please fork the repository and submit a pull request with your improvements.
