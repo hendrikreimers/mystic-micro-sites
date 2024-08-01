@@ -1,0 +1,39 @@
+
+.field__image {
+  @apply
+  flex
+  flex-row;
+
+  .input-group {
+    @apply
+    block;
+
+    .input__preview {
+      @apply
+        bg-white
+        border-solid
+        border-2
+        border-gray-400
+        px-3
+        py-2
+        mt-3;
+
+      .image__preview {
+        @apply
+          w-full
+          max-w-[428px];
+      }
+    }
+  }
+
+  .error {
+    @apply
+      my-2
+      text-red-700;
+  }
+
+  input[type='file'] {
+    @apply
+      hidden;
+  }
+}

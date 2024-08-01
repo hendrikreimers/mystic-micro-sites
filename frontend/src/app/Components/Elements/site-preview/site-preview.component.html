@@ -1,0 +1,20 @@
+<div id="body" class="font-family__{{ siteLayout.fontFamily }}" [style]="{backgroundColor: siteLayout.bgColor, color: siteLayout.textColor}">
+  <div class="field" *ngFor="let elField of siteLayout.elements; index as i;" [ngSwitch]="elField.type">
+    <headline-preview
+      *ngSwitchCase="'headline'"
+      [elementConfig]="transformSiteElementType(elField)"
+      [uid]="elField.uid" />
+    <text-preview
+      *ngSwitchCase="'text'"
+      [elementConfig]="transformSiteElementType(elField)"
+      [uid]="elField.uid" />
+    <image-preview
+      *ngSwitchCase="'image'"
+      [elementConfig]="transformSiteElementType(elField)"
+      [uid]="elField.uid" />
+    <link-preview
+      *ngSwitchCase="'link'"
+      [elementConfig]="transformSiteElementType(elField)"
+      [uid]="elField.uid" />
+  </div>
+</div>

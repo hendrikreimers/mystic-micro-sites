@@ -1,0 +1,30 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import 'primeicons/primeicons.css';
+
+html, body {
+  @apply
+    m-0
+    p-0;
+}
+
+body {
+  @apply
+    bg-gray-100;
+}
+
+.button {
+  @apply
+    no-underline
+    px-[0.5rem]
+    py-[0.25rem]
+    sm:px-[0.75rem]
+    sm:py-[0.75rem];
+}
+
+.button--danger {
+  @apply
+    bg-red-600
+    hover:bg-red-700
+    border-red-700;
+}

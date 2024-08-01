@@ -1,0 +1,42 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Deny access to all files in Resources/Private/ and Classes/
+    RewriteRule ^(Resources/Private|Classes|vendor|resources/private|classes) - [F,L]
+
+    # Deny access to all files in data/
+    RewriteRule ^data/ - [F,L]
+
+    # Deny access to all files with .enc, .h, .sh extensions
+    RewriteRule \.(enc|h|sh|key)$ - [F,L]
+
+    # Rewrite to view
+    RewriteRule ^view/([^/]+)/([^/]+)$ /view.php?id=$2&key=$1 [QSA,L]
+</IfModule>
+
+<FilesMatch "\.(enc|h|sh|key|env)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "-cli\.php$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Disable directory listings
+Options -Indexes
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "no-referrer"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self';"
+    Header set Permissions-Policy "geolocation=(), midi=(), notifications=(), push=(), sync-xhr=(), microphone=(), camera=(), magnetometer=(), gyroscope=(), speaker=(), vibrate=(), fullscreen=(), payment=()"
+    Header set Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</IfModule>

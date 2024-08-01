@@ -1,0 +1,28 @@
+
+.card {
+  @apply
+    flex
+    content-center;
+
+  .text {
+
+  }
+
+  .password {
+    @apply
+      my-5
+      flex;
+  }
+
+  .button-group {
+    @apply
+      content-end
+      flex-row
+      flex;
+
+    .button {
+      @apply
+        mr-0.5;
+    }
+  }
+}

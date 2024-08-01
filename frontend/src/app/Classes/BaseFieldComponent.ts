@@ -1,0 +1,40 @@
+import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {SiteElement} from "../Models/SiteLayoutModel";
+import {CommonModule} from "@angular/common";
+
+/**
+ * Base Component for Field Elements
+ *
+ */
+@Component({
+  standalone: true,
+  template: ``,
+  imports: [
+    CommonModule
+  ]
+})
+export class BaseFieldComponent<T> {
+  // Event Emitters
+  @Output() elementChange: EventEmitter<SiteElement<T>> = new EventEmitter<SiteElement<T>>();
+  @Output() elementRemove: EventEmitter<string> = new EventEmitter<string>();
+
+  // Component Attributes
+  @Input() uid!: string; // Unique Identifier (UID)
+  @Input() elementConfig!: SiteElement<T>; // Element Configuration (Generic)
+
+  /**
+   * Triggers the event (especially on parent) to submit changes
+   *
+   */
+  protected onElementChange(): void {
+    this.elementChange.emit(this.elementConfig);
+  }
+
+  /**
+   * Triggers the event (especially on parent) to remove this element
+   *
+   */
+  protected onElementRemove(): void {
+    this.elementRemove.emit(this.elementConfig.uid);
+  }
+}

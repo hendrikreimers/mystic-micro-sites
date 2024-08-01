@@ -1,0 +1,36 @@
+
+.main__header {
+  @apply
+    flex
+    flex-col
+    sm:flex-row
+    bg-white
+    shadow-[rgba(0,0,15,0.5)_0_0_4px_0]
+    p-3;
+
+  .header__logo {
+    @apply
+      flex-grow;
+
+    img {
+      @apply
+        w-full
+        h-auto
+        max-w-[222px]
+        sm:pl-5;
+    }
+  }
+
+  .header__options {
+    @apply
+      content-end
+      self-end
+      justify-end;
+  }
+}
+
+.main__body {
+  @apply
+    py-3
+    px-7;
+}

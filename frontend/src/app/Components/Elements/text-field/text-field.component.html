@@ -1,0 +1,6 @@
+<div class="field__text">
+  <textarea rows="5" cols="30" pInputTextarea [autoResize]="true" [(ngModel)]="textValue"></textarea>
+  <p-button [disabled]="areButtonsEnabled()" icon="pi pi-check" severity="success" (click)="onSaveValue($event)" />
+  <p-button [disabled]="areButtonsEnabled()" icon="pi pi-times" severity="warning" (click)="onCancelValue($event)"/>
+  <p-button icon="pi pi-trash" severity="danger" (click)="onElementRemove()" />
+</div>

@@ -1,0 +1,32 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>MysticMicroSite</title>
+  <link rel="stylesheet" href="{{ baseUrl }}/microsite.css">
+</head>
+<body id="body" class="font-family__{{ fontFamily }}" style="background-color: {{ bgColor }}; color: {{ textColor }}">
+<mms:forEach each="{{ elements | base64_encode }}" let="element" index="myIndex" eachPipe="base64_decode">
+  <mms:if condition="'{{ element.type.value }}' == 'headline'">
+    <h{{ element.element.layout }}>{{ element.element.value }}</h{{ element.element.layout }}>
+  </mms:if>
+
+  <mms:if condition="'{{ element.type.value }}' == 'text'">
+    <p>{{ element.element.value }}</p>
+  </mms:if>
+
+  <mms:if condition="'{{ element.type.value }}' == 'image'">
+    <img class="image" src="{{ element.element.imageData }}">
+  </mms:if>
+
+  <mms:if condition="'{{ element.type.value }}' == 'link'">
+    <div class="link">
+      <a href="{{ element.element.href }}" target="_blank">{{ element.element.title }}</a>
+    </div>
+  </mms:if>
+</mms:forEach>
+
+</body>
+</html>

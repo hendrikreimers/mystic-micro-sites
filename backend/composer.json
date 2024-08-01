@@ -1,0 +1,20 @@
+{
+  "name": "hendrikreimers/mysticmicrosites_backend",
+  "description": "Encrypts and decrypts little content and more",
+  "authors": [
+    {
+      "name": "Hendrik Reimers",
+      "role": "Developer",
+      "homepage": "https://github.com/hendrikreimers"
+    }
+  ],
+  "require": {
+    "firebase/php-jwt": "^6.10",
+    "paragonie/sodium_compat": "^2.0",
+    "vlucas/phpdotenv": "^5.6",
+    "ramsey/uuid": "^4.7",
+    "symfony/rate-limiter": "^7.1",
+    "symfony/http-foundation": "^7.1",
+    "symfony/expression-language": "^7.1"
+  }
+}

@@ -1,0 +1,85 @@
+
+/**
+ * Container Layout
+ *
+ */
+.container--flex-row {
+  @apply
+    w-full
+    sm:flex
+    sm:flex-row;
+
+  .editor,
+  .preview {
+    @apply
+      w-full
+      sm:max-w-[50%]
+      sm:flex-grow;
+  }
+
+  .saveBtn {
+    @apply
+      ml-2;
+  }
+}
+
+/**
+ * Element Editor Configuration Blocks, default Layout
+ *
+ */
+.editor .field {
+  @apply
+    flex
+    flex-row
+    my-4;
+
+  .field__move {
+    .button {
+      @apply
+        px-1;
+    }
+  }
+
+  .p-component, .p-element {
+    @apply
+      px-1;
+  }
+}
+
+/**
+ * Site Layout Configuration Block
+ *
+ */
+.editor__site-layout {
+  @apply
+    sm:flex
+    sm:flex-row
+    sm:align-middle
+    mb-5;
+
+  .field > label,
+  .field > .p-element {
+    @apply
+      sm:inline-block
+      self-center;
+  }
+
+  #fontFamily {
+    @apply
+      min-w-[250px];
+  }
+}
+
+.preview__content {
+  @apply
+    border-solid
+    border-2
+    border-gray-400
+    block
+    max-w-[428px];
+
+  .field {
+    @apply
+      block;
+  }
+}

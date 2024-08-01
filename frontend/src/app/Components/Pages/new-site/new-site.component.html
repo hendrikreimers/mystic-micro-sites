@@ -1,0 +1,72 @@
+<div class="container container--flex-row">
+  <div class="editor">
+
+    <div class="editor__adds">
+      <p-buttonGroup>
+        <p-button label="Headline" (click)="addElement('headline')" icon="pi pi-book" />
+        <p-button label="Text" (click)="addElement('text')" icon="pi pi-align-left" />
+        <p-button label="Image" (click)="addElement('image')" icon="pi pi-image" />
+        <p-button label="Link" (click)="addElement('link')" icon="pi pi-link" />
+      </p-buttonGroup>
+      <p-button label="Save" class="saveBtn" severity="success" (click)="showSaveDialog = true" icon="pi pi-save" />
+    </div>
+
+    <div class="editor__site-layout">
+      <div class="field field__bg-color">
+        <label for="bgColor">Color:</label>
+        <p-colorPicker [(ngModel)]="siteLayout.bgColor" id="bgColor" />
+      </div>
+      <div class="field field__text-color">
+        <label for="textColor">Text:</label>
+        <p-colorPicker [(ngModel)]="siteLayout.textColor" id="textColor" />
+      </div>
+      <div class="field field__font-family">
+        <label for="fontFamily">Font:</label>
+        <p-dropdown [options]="fontFamilyOptions" [(ngModel)]="fontFamily" optionLabel="label" placeholder="Font" id="fontFamily" />
+      </div>
+    </div>
+
+    <div class="editor__fields">
+      <div class="field" *ngFor="let elField of siteLayout.elements; index as i;" [ngSwitch]="elField.type">
+        <div class="field__move">
+          <p-button class="button" icon="pi pi-chevron-up" severity="secondary" (click)="moveElementUp(elField.uid)" />
+          <p-button class="button" icon="pi pi-chevron-down" severity="secondary" (click)="moveElementDown(elField.uid)" />
+        </div>
+        <headline-field
+          *ngSwitchCase="'headline'"
+          [elementConfig]="transformSiteElementType(elField)"
+          [uid]="elField.uid"
+          (elementChange)="onElementChange($event)"
+          (elementRemove)="onElementRemove(elField.uid)" />
+        <text-field
+          *ngSwitchCase="'text'"
+          [elementConfig]="transformSiteElementType(elField)"
+          [uid]="elField.uid"
+          (elementChange)="onElementChange($event)"
+          (elementRemove)="onElementRemove(elField.uid)" />
+        <image-field
+          *ngSwitchCase="'image'"
+          [elementConfig]="transformSiteElementType(elField)"
+          [uid]="elField.uid"
+          (elementChange)="onElementChange($event)"
+          (elementRemove)="onElementRemove(elField.uid)" />
+        <link-field
+          *ngSwitchCase="'link'"
+          [elementConfig]="transformSiteElementType(elField)"
+          [uid]="elField.uid"
+          (elementChange)="onElementChange($event)"
+          (elementRemove)="onElementRemove(elField.uid)" />
+      </div>
+    </div>
+
+  </div>
+
+  <div class="preview">
+    <div class="preview__label">Preview</div>
+    <div class="preview__content">
+      <site-preview [siteLayout]="siteLayout" />
+    </div>
+  </div>
+
+  <save-dialog [visible]="showSaveDialog" (buttonClicked)="onSaveDialogButtonClick($event)" />
+</div>

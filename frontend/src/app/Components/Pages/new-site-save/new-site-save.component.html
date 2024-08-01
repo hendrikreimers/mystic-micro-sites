@@ -1,0 +1,25 @@
+
+<div class="error" *ngIf="isFalseCall">
+  <p><strong>Don't call this site, if you're not want to save a MysticMicroSite!</strong></p>
+  <p><a routerLink="/dashboard">Back to Dashboard</a></p>
+</div>
+
+<div class="progress" *ngIf="!isFalseCall && isSaving">
+  <p-progressSpinner styleClass="spinner" strokeWidth="2" fill="var(--surface-ground)" animationDuration=".8s" />
+  <span>Saving...</span>
+</div>
+
+<div class="progress" *ngIf="errorMsg !== ''">
+  <p>Error: Something went wrong. Have you entered the correct password?</p>
+  <p><a routerLink="/new-site">Back to Editor</a></p>
+</div>
+
+<div class="result" *ngIf="!isFalseCall && !isSaving">
+  <h2>Done</h2>
+  <p>Here's your URL: </p>
+  <div>
+    <input pInputText type="text" value="{{ resultUrl }}" #urlField />
+    <p-button label="Copy to Clipboard" (click)="copyToClipboard(urlField)" />
+  </div>
+  <p><a routerLink="/dashboard">Back to Dashboard</a></p>
+</div>

@@ -1,0 +1,15 @@
+
+.progress {
+  @apply
+    flex
+    flex-row
+    content-center
+    items-center;
+
+  .spinner {
+    @apply
+      w-[40px]
+      h-[40px]
+      mr-3;
+  }
+}

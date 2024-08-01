@@ -1,0 +1,17 @@
+<div class="card">
+  <p-dialog header="Attention" (onHide)="onClose($event)" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <div class="text">
+      <p>If it's saved, it's not changeable anymore.</p>
+      <p>There will be generated a random password for your custom link, and you will receive the link only one time!</p>
+      <p>If you loose the link, there's no turning back!</p>
+    </div>
+    <div class="password">
+      <label for="masterPassword" class="font-semibold w-6rem">Master Password</label>
+      <input pInputText id="masterPassword" class="flex-auto" [(ngModel)]="password" autocomplete="off" />
+    </div>
+    <div class="button-group">
+      <p-button class="button" label="Cancel" severity="secondary" (onClick)="onButtonClick($event, 'cancelBtn')" />
+      <p-button class="button" [disabled]="saveBtnDisabled" label="Save" (onClick)="onButtonClick($event, 'saveBtn')" />
+    </div>
+  </p-dialog>
+</div>

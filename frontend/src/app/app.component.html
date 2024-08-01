@@ -1,0 +1,14 @@
+<div class="main">
+  <div class="main__header">
+    <div class="header__logo">
+      <img src="/images/logo.jpg" alt="MysticMicroSites Logo" title="MysticMicroSites">
+    </div>
+    <div class="header__options" *ngIf="showLogin">
+      <a pButton routerLink="/logout" class="button button--danger">Logout</a>
+    </div>
+  </div>
+
+  <div class="main__body">
+    <router-outlet />
+  </div>
+</div>

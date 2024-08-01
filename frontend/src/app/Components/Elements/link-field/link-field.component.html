@@ -1,0 +1,17 @@
+<div class="field__text">
+  <div class="input-group">
+    <div class="text__input">
+      <label for="title">Title</label>
+      <input type="text" pInputText [(ngModel)]="titleValue" id="title" />
+    </div>
+    <div class="text__input">
+      <label for="href">URL</label>
+      <input type="text" pInputText [(ngModel)]="hrefValue" id="href" />
+    </div>
+  </div>
+  <div class="button-group">
+    <p-button [disabled]="areButtonsEnabled()" icon="pi pi-check" severity="success" (click)="onSaveValue($event)" />
+    <p-button [disabled]="areButtonsEnabled()" icon="pi pi-times" severity="warning" (click)="onCancelValue($event)"/>
+    <p-button icon="pi pi-trash" severity="danger" (click)="onElementRemove()" />
+  </div>
+</div>

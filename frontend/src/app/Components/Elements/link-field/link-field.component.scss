@@ -1,0 +1,27 @@
+
+.field__text {
+  @apply
+    flex
+    flex-row;
+
+  .input-group {
+    @apply
+      block;
+
+    label {
+      @apply
+        mr-2;
+    }
+
+    input#title,
+    input#href {
+      @apply
+        min-w-[295px];
+    }
+
+    .text__input {
+      @apply
+        mb-2;
+    }
+  }
+}

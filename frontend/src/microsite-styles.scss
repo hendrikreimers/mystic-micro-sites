@@ -1,0 +1,67 @@
+#body {
+  margin: 0 auto;
+
+  @apply
+    p-2
+    leading-6
+    text-[1rem]
+    max-w-[428px];
+
+  &.font-family__Arial {
+    font-family: 'Arial', sans-serif;
+  }
+
+  &.font-family__Helvetica {
+    font-family: 'Helvetica', sans-serif;
+  }
+
+  &.font-family__sans-serif {
+    font-family: sans-serif;
+  }
+
+  &.font-family__TimesNewRoman {
+    font-family: 'Times New Roman', serif;
+  }
+
+  &.font-family__CourierNewRoman {
+    font-family: 'Courier New Roman', serif;
+  }
+
+  &.font-family__ComicSansMS {
+    font-family: 'Comic Sans MS', serif;
+  }
+}
+
+.link {
+  @apply
+    w-full
+    text-center;
+
+  a {
+    @apply
+      bg-white
+      py-2
+      px-3
+      m-4
+      mx-auto
+      border-2
+      border-solid
+      border-black
+      rounded-lg
+      inline-block
+      text-black
+      no-underline;
+
+    &:hover {
+      @apply
+        text-white
+        bg-gray-500;
+    }
+  }
+}
+
+.image {
+  @apply
+  max-w-[420px]
+  w-full;
+}

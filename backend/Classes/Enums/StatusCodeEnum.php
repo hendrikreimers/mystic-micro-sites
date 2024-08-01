@@ -1,0 +1,25 @@
+<?php
+declare(strict_types = 1);
+
+namespace Enums;
+
+enum StatusCodeEnum: int {
+  case UNAUTHORIZED_ACCESS = 401;
+  case NOT_FOUND = 404;
+  case FORBIDDEN = 403;
+  case NOT_ALLOWED = 405;
+  case NOT_ACCEPTABLE = 406;
+  case GONE = 410;
+  case LENGTH_REQUIRED = 411;
+  case PRECONDITION_FAILED = 412;
+  case TOO_MANY_REQUESTS = 429;
+  case REQUEST_ENTITY_TOO_LARGE = 413;
+  case REQUEST_URI_TOO_LARGE = 414;
+  case UNSUPPORTED_MEDIA_TYPE = 415;
+  case UNPROCESSABLE_ENTITY = 422;
+  case LOCKED = 423;
+  case LOCKED_BY_REQUEST_METHOD = 424;
+  case LOCKED_BY_REQUEST_HEADERS = 426;
+  case LOCKED_BY_REQUEST_URI = 428;
+  case SEE_OTHER = 500;
+}
