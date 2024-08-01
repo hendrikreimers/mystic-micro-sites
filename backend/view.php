@@ -42,18 +42,27 @@ if ( !file_exists($encFile) && !file_exists($headerFile) ) {
   die("Not found");
 }
 
-// Load the file contents of the encrypted file and the header file
-// Decrypt the rest of the password from the header file
-$headerContent = (array)json_decode(EnigmaBase64Service::enigmaBase64Decode($encryptionService->decryptDataWithKeyPair(FileService::getFileContent($fileId . '.enc.h'))));
-$fileContent = FileService::getFileContent($fileId . '.enc');
-
 // Build the whole password with the given params and the part of the header file
 // ATTENTION: urlencode() is needed if you rewrite via htaccess
 $keyParts = EnigmaBase64Service::enigmaBase64Decode(urlencode($keyParts)) ?: EnigmaBase64Service::enigmaBase64Decode($keyParts);
 $keyA = substr($keyParts, 0, 10);
-$keyB = $headerContent['keyB'];
+// $keyB, will be set after decryption with keyA and keyB
 $keyC = substr($keyParts, -10);
+
+// Load the file contents of the encrypted file and the header file
+// Decrypt the rest of the password from the header file
+$headerContent = (array)json_decode(EnigmaBase64Service::enigmaBase64Decode($encryptionService->decryptData(
+  FileService::getFileContent($fileId . '.enc.h'),
+  $keyA . DIRECTORY_SEPARATOR . $keyC, // see ApiService SAVE Endpoint for the opposite handling
+  SECRET_KEY
+)));
+$keyB = $headerContent['keyB'];
+
+// Define decryption password
 $password = $keyA . $keyB . $keyC;
+
+// Get the file content of the main data file
+$fileContent = FileService::getFileContent($fileId . '.enc');
 
 // Decrypt
 try {
@@ -63,8 +72,8 @@ try {
 }
 
 // Load template
-$templatePath = BASE_PATH . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'Private' . DIRECTORY_SEPARATOR . 'Templates' . DIRECTORY_SEPARATOR;
-$template = new TemplateEngine($templatePath . 'MicroSite.html');
+$templatePath = join(DIRECTORY_SEPARATOR, [BASE_PATH, 'Resources', 'Private', 'Templates']);
+$template = new TemplateEngine($templatePath . DIRECTORY_SEPARATOR. 'MicroSite.html');
 
 // Force type
 $siteLayout = SiteLayoutModel::fromArray(ObjectUtility::objectToArray($decryptedData));

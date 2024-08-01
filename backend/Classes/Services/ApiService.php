@@ -298,7 +298,8 @@ class ApiService {
         );
 
         // Encrypt for the header file
-        $encryptedHeader = $this->encryptionService->encryptDataWithKeyPair($headerData);
+        $encryptedHeader = $this->encryptionService->encryptData($headerData, [$keyA . DIRECTORY_SEPARATOR . $keyC], SECRET_KEY);
+        #$encryptedHeader = $this->encryptionService->encryptDataWithKeyPair($headerData);
 
         // Save everything
         FileService::saveFileContent($filename, $encryptedData);
