@@ -36,8 +36,8 @@ if ( (!$fileId || !$keyParts) ) {
 }
 
 // Build file path and name and check if they exists
-$encFile = BASE_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $fileId . '.enc';
-$headerFile = $encFile = BASE_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $fileId . '.enc.h';
+$encFile = join(DIRECTORY_SEPARATOR, [BASE_PATH ,'data', $fileId . '.enc']);
+$headerFile = join(DIRECTORY_SEPARATOR, [BASE_PATH, 'data', $fileId . '.enc.h']);
 if ( !file_exists($encFile) && !file_exists($headerFile) ) {
   die("Not found");
 }
@@ -75,7 +75,7 @@ try {
 $templatePath = join(DIRECTORY_SEPARATOR, [BASE_PATH, 'Resources', 'Private', 'Templates']);
 $template = new TemplateEngine($templatePath . DIRECTORY_SEPARATOR. 'MicroSite.html');
 
-// Force type
+// Force type (for template engine as array)
 $siteLayout = SiteLayoutModel::fromArray(ObjectUtility::objectToArray($decryptedData));
 
 // Assign variables
