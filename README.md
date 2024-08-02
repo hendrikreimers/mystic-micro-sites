@@ -1,3 +1,30 @@
+# Table of Contents
+
+1. [Mystic Micro Sites](#mystic-micro-sites)
+2. [Features](#features)
+3. [Use Cases](#use-cases)
+  - [Secure Digital Memorabilia](#secure-digital-memorabilia)
+  - [Private Collections and Exhibitions](#private-collections-and-exhibitions)
+  - [Event Invitations and Information](#event-invitations-and-information)
+4. [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Setup Process](#setup-process)
+    - [Clone the Repository](#clone-the-repository)
+    - [Install PHP Dependencies](#install-php-dependencies)
+    - [Environment Setup](#environment-setup)
+    - [Build the Frontend](#build-the-frontend)
+    - [Web Server Configuration](#web-server-configuration)
+5. [Usage](#usage)
+  - [Access the Editor](#access-the-editor)
+  - [Site Generation](#site-generation)
+  - [Site Access](#site-access)
+6. [Configuration Details](#configuration-details)
+  - [Angular Configuration](#angular-configuration)
+  - [Backend Configuration](#backend-configuration)
+7. [Security Features](#security-features)
+8. [Future Enhancements](#future-enhancements)
+9. [Contribution](#contribution)
+10. [License](#license)
 
 # Mystic Micro Sites
 
@@ -16,6 +43,29 @@ Mystic Micro Sites is a secure and efficient platform for creating mini-websites
 - **NFC Tag Integration**: Enables NFC tags to link physical objects to digital content, providing an interactive way to access site details.
 - **Modular Codebase**: Designed for easy extension and customization, making it suitable for various development needs.
 - **Custom Template Engine**: Small high functional Template Engine for dynamic contet rendering, build from scratch.
+- **QR Codes:**: Generates QR Codes as downloadable Image of the generated Mystic URL.
+
+## Use cases
+
+1. **Secure Digital Memorabilia**
+
+   - **Scenario:** A user wants to create a digital memory archive linked to physical objects like souvenirs or gifts.
+   - **Solution:** By integrating **NFC tags** or **QR codes** with Mystic Micro Sites, users can securely store and share digital content like photos, videos, or stories. When the tag or code is scanned, the content is accessed through an encrypted URL, ensuring privacy and security.
+   - **Benefit:** This allows for private sharing of memories with friends or family without the risk of unauthorized access.
+
+
+3. **Private Collections and Exhibitions**
+
+   - **Scenario:** A collector wants to showcase their collection of rare items or artworks to a select group of individuals.
+   - **Solution:** Using Mystic Micro Sites, collectors can create private galleries with controlled access through encrypted URLs. This ensures that only invited guests with the correct link can view the collection.
+   - **Benefit:** Collectors can protect their intellectual property and maintain exclusivity while sharing their collections with interested parties.
+
+
+4. **Event Invitations and Information**
+
+   - **Scenario:** An event organizer needs to send out invitations with sensitive information, such as location details and attendee lists.
+   - **Solution:** Organizers can use Mystic Micro Sites to create secure invitation sites with all relevant event details. Access is granted only through a unique URL, reducing the risk of leaks.
+   - **Benefit:** This ensures that only invited guests can access the event details, maintaining privacy and enhancing security.
 
 ## Installation
 

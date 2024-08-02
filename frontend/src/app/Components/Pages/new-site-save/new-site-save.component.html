@@ -21,5 +21,21 @@
     <input pInputText type="text" value="{{ resultUrl }}" #urlField />
     <p-button label="Copy to Clipboard" (click)="copyToClipboard(urlField)" />
   </div>
+  <div class="qrcode" #qrcode>
+    <qrcode
+      [qrdata]="resultUrl"
+      [allowEmptyString]="true"
+      [colorDark]="'#000000'"
+      [colorLight]="'#ffffff'"
+      [elementType]="'canvas'"
+      [errorCorrectionLevel]="'L'"
+      [margin]="4"
+      [scale]="1"
+      [width]="300"
+    ></qrcode>
+  </div>
+  <div class="qrCodeDownload">
+    <p-button label="Download QR Code" (click)="saveQrCodeImage(qrcode)" />
+  </div>
   <p><a routerLink="/dashboard">Back to Dashboard</a></p>
 </div>
