@@ -1,5 +1,8 @@
+<!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -8,27 +11,25 @@
   <link rel="stylesheet" href="{{ baseUrl }}/microsite.css">
 </head>
 <body id="body" class="font-family__{{ fontFamily }}" style="background-color: {{ bgColor }}; color: {{ textColor }}">
-<!-- It's difficult to pass a JSON string into an attribute, i was bored so i made a workaounrd by adding pipe calls -->
-<!-- pipe calls are calling an php function before inserting the variable. eachPipe attribute reverse it before using it -->
+<mms:comment>
+  <!-- It's difficult to pass a JSON string into an attribute, i was bored so i made a workaounrd by adding pipe calls -->
+  <!-- pipe calls are calling an php function before inserting the variable. eachPipe attribute reverse it before using it -->
+</mms:comment>
 <mms:forEach each="{{ elements | base64_encode }}" let="element" index="myIndex" eachPipe="base64_decode">
   <mms:if condition="'{{ element.type.value }}' == 'headline'">
     <h{{ element.element.layout }}>{{ element.element.value }}</h{{ element.element.layout }}>
   </mms:if>
-
   <mms:if condition="'{{ element.type.value }}' == 'text'">
     <p>{{ element.element.value }}</p>
   </mms:if>
-
   <mms:if condition="'{{ element.type.value }}' == 'image'">
     <img class="image" src="{{ element.element.imageData }}">
   </mms:if>
-
   <mms:if condition="'{{ element.type.value }}' == 'link'">
     <div class="link">
       <a href="{{ element.element.href }}" target="_blank">{{ element.element.title }}</a>
     </div>
   </mms:if>
 </mms:forEach>
-
 </body>
 </html>
