@@ -102,7 +102,7 @@ class TemplateEngine
     // Process each tag iteratively, starting with the outermost
     while (preg_match($pattern, $html, $matches)) {
       // Process the matched tag and get the rendered content
-      $renderedContent = $this->processTag($matches);
+      $renderedContent = trim($this->processTag($matches));
 
       // Replace the matched tag with its rendered content
       $html = str_replace($matches[0], $renderedContent, $html);
@@ -148,7 +148,7 @@ class TemplateEngine
     }
 
     // Render the tag using the attributes and inner content
-    return $instance->render($attributes, $innerContent);
+    return $instance->render($attributes, trim($innerContent));
   }
 
   /**
