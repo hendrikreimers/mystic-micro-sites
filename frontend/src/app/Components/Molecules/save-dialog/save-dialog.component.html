@@ -7,7 +7,7 @@
     </div>
     <div class="password">
       <label for="masterPassword" class="font-semibold w-6rem">Master Password</label>
-      <input pInputText id="masterPassword" class="flex-auto" [(ngModel)]="password" autocomplete="off" />
+      <input pInputText type="password" id="masterPassword" class="flex-auto" [(ngModel)]="password" autocomplete="off" />
     </div>
     <div class="button-group">
       <p-button class="button" label="Cancel" severity="secondary" (onClick)="onButtonClick($event, 'cancelBtn')" />
