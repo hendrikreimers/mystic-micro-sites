@@ -8,8 +8,19 @@ namespace Template;
  *
  * It handles the variables and values for the view atm.
  */
-class TemplateView
-{
+class TemplateView {
+  /**
+   * Config value to escapeString on final value
+   * @var bool
+   */
+  public $escapeString = true;
+
+  /**
+   * Config value to stripTags on final value
+   * @var bool
+   */
+  public $stripTags = true;
+
   /**
    * Variable container
    * @var array
@@ -23,8 +34,7 @@ class TemplateView
    * @param string|array|int $value
    * @return void
    */
-  public function assign(string $name, string|array|int $value): void
-  {
+  public function assign(string $name, string|array|int $value): void {
     $this->variables[$name] = $value;
   }
 
@@ -34,8 +44,7 @@ class TemplateView
    * @param array $variables
    * @return void
    */
-  public function assignMultiple(array $variables): void
-  {
+  public function assignMultiple(array $variables): void {
     foreach ($variables as $name => $value) {
       $this->variables[$name] = $value;
     }
@@ -47,9 +56,8 @@ class TemplateView
    * @param string $name
    * @return mixed|null
    */
-  public function get(string $name)
-  {
-    return $this->variables[$name] ?? null;
+  public function get(string $name) {
+    return $this->handleValueEscape($this->variables[$name]) ?? null;
   }
 
   /**
@@ -58,8 +66,7 @@ class TemplateView
    * @param string $path
    * @return mixed|null
    */
-  public function getNested(string $path)
-  {
+  public function getNested(string $path) {
     // Match each part of the path, handling both dots and array indices
     $pattern = '/(?<!\\\\)(?:\.|(?<=\])\.)/';  // Split by '.' unless inside brackets
     $keys = preg_split($pattern, $path);
@@ -86,7 +93,7 @@ class TemplateView
       }
     }
 
-    return is_array($value) ? json_encode($value) : $value;
+    return is_array($value) ? json_encode($value) : $this->handleValueEscape($value);
   }
 
   /**
@@ -94,13 +101,17 @@ class TemplateView
    *
    * @return array
    */
-  public function getAll(): array
-  {
+  public function getAll(): array {
     return $this->variables;
   }
 
-  public function renderContent(string $content): string
-  {
+  /**
+   * Renders child content variables (used mostly in viewhelpers))
+   *
+   * @param string $content
+   * @return string
+   */
+  public function renderContent(string $content): string {
     // Match all {{ variable }} patterns and replace them with actual values
     return preg_replace_callback('/{{\s*([\w.\[\]]+)\s*}}/', function ($matches) {
       $variableName = $matches[1];
@@ -108,5 +119,25 @@ class TemplateView
       $value = $this->getNested($variableName);
       return $value !== null ? $value : $matches[0];
     }, $content);
+  }
+
+  /**
+   * Escapes the string if set in view options
+   *
+   * @param mixed $value
+   * @return mixed
+   */
+  private function handleValueEscape(mixed $value): mixed {
+    if ( is_string($value) ) {
+      if ( $this->stripTags ) {
+        $value = strip_tags($value);
+      }
+
+      if ( $this->escapeString ) {
+        $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+      }
+    }
+
+    return $value;
   }
 }
