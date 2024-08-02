@@ -16,6 +16,8 @@ RemoveHandler .var
 
     # Rewrite to view
     RewriteRule ^view/([^/]+)/([^/]+)$ /view.php?id=$2&key=$1 [QSA,L]
+    RewriteRule ^m/([^/]+)$ /v-middle.php?p=$1 [QSA,L]
+    RewriteRule ^show/([^/]+)$ /v-show.php?p=$1 [QSA,L]
 </IfModule>
 
 <FilesMatch "\.(enc|h|sh|key|env)$">
