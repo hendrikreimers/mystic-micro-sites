@@ -1,5 +1,6 @@
 #body {
   margin: 0 auto;
+  overflow-x: hidden;
 
   @apply
     p-2
@@ -95,6 +96,7 @@
 
   .vcard__card {
     @apply
+      overflow-x-hidden
       flex
       flex-row;
   }
