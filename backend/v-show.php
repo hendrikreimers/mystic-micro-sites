@@ -17,11 +17,13 @@ use Factory\EnvConstantsHelper;
 use Helpers\RateLimitHelper;
 use Helpers\ResponseHelper;
 use Models\SiteLayoutModel;
+use Services\EncryptionService;
 use Services\EnigmaBase64Service;
 use Services\FileService;
 use Symfony\Component\HttpFoundation\Request;
 use Template\TemplateEngine;
 use Utility\ObjectUtility;
+use Utility\StringUtlity;
 
 // Global Environment Constants declaration
 EnvConstantsHelper::defineEnvConstants();
@@ -29,24 +31,39 @@ EnvConstantsHelper::defineEnvConstants();
 // Initialize Class Instances
 $request = Request::createFromGlobals(); // Symfony Request Handler
 $response = new ResponseHelper(); // ResponseHelper
-$encryptionService = new Services\EncryptionService(); // Initialize encryption service
+$encryptionService = new EncryptionService(); // Initialize encryption service
 
 // Initialize rate limiter
 $rateLimit = new RateLimitHelper($response, $request); // Initialize rate limiter
 
 // Get URL query parameters
-[$fileId, $keyParts, $timestamp] = json_decode(EnigmaBase64Service::enigmaBase64Decode(($request->get('p'))));
+$params = $request->get('p');
+if ( !$params ) {
+  die("Missing arguments (#1)");
+}
+
+// Decrypt and push results to variables
+[$fileId, $keyParts, $timestamp, $hashSend] = json_decode(EnigmaBase64Service::enigmaBase64Decode($params));
+
+// Create a comparison hash
+$hashLocal = StringUtlity::hashString(implode('', [
+  $fileId,
+  $keyParts,
+  $timestamp,
+  $request->getClientIp(),
+  $request->headers->get('User-Agent')
+]), SECRET_KEY);
+
+// Check hash and a bit more
+if ( !$fileId || !$keyParts || $hashSend !== $hashLocal ) {
+  die("Missing arguments (#2)");
+}
 
 // Time limit has ended redirect to dummy 404
 if ( time() > $timestamp ) {
   http_response_code(404);
   header("Location: /404");
   exit();
-}
-
-// Simple Check
-if ( (!$fileId || !$keyParts) ) {
-  die("Missing arguments");
 }
 
 // Build file path and name and check if they exists
@@ -65,7 +82,7 @@ $keyA = substr($keyParts, 0, 10);
 // $keyB, will be set after decryption with keyA and keyB
 $keyC = substr($keyParts, -10);
 
-// Load the file contents of the encrypted file and the header file
+// Load the file contents of the encrypted header file
 // Decrypt the rest of the password from the header file
 $headerContent = (array)json_decode(EnigmaBase64Service::enigmaBase64Decode($encryptionService->decryptData(
   FileService::getFileContent($fileId . '.enc.h'),
@@ -80,7 +97,7 @@ $password = $keyA . $keyB . $keyC;
 // Get the file content of the main data file
 $fileContent = FileService::getFileContent($fileId . '.enc');
 
-// Decrypt
+// Decrypt the content
 try {
   $decryptedData = json_decode($encryptionService->decryptData($fileContent, $password, SECRET_KEY));
 } catch (\Exception $e) {

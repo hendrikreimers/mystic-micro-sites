@@ -17,6 +17,7 @@ use Helpers\RateLimitHelper;
 use Helpers\ResponseHelper;
 use Services\EnigmaBase64Service;
 use Symfony\Component\HttpFoundation\Request;
+use Utility\StringUtlity;
 
 // Global Environment Constants declaration
 EnvConstantsHelper::defineEnvConstants();
@@ -37,8 +38,25 @@ if ( (!$fileId || !$keyParts) ) {
   die("Missing arguments");
 }
 
+// Create a timestamp for access limitation
 $timestamp = time() + 10; // Current timestamp plus 10 seconds
-$params = urlencode(rawurlencode(EnigmaBase64Service::enigmaBase64Encode(json_encode([$fileId, $keyParts, $timestamp]))));
+
+// Hash it, so we will recognize any modification
+$hash = StringUtlity::hashString(implode('', [
+  $fileId,
+  $keyParts,
+  $timestamp,
+  $request->getClientIp(),
+  $request->headers->get('User-Agent')
+]), SECRET_KEY);
+
+// Build the data for the URL query param
+$params = json_encode([$fileId, $keyParts, $timestamp, $hash]);
+
+// Transform data appending hash
+$params = urlencode(rawurlencode(EnigmaBase64Service::enigmaBase64Encode($params)));
+
+// Build URL and start redirect
 $middleUrl = "/m/$params";
 header("Location: $middleUrl", true, 303); // 303 See Other
 exit();

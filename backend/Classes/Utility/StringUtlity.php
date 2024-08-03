@@ -67,4 +67,17 @@ class StringUtlity {
     return (bool)preg_match($expr, $string);
   }
 
+  /**
+   * Creates a secure hash from string
+   *
+   * @param string $string
+   * @param string $secretKey
+   * @param $hashAlgo
+   * @param $binary
+   * @return string
+   */
+  public static function hashString(string $string, string $secretKey, $hashAlgo = 'sha256', $binary = false): string {
+    return hash_hmac($hashAlgo, $string, $secretKey, $binary);
+  }
+
 }
