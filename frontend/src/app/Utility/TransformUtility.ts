@@ -4,7 +4,7 @@
   *
   * @param elField
   */
-import {SiteElementInterface, SiteElements} from "../Interfaces/SiteLayoutInterface";
+import {SiteElements} from "../Interfaces/SiteLayoutInterface";
 import {SiteElement, SiteLayout} from "../Models/SiteLayoutModel";
 
 /**
@@ -13,8 +13,8 @@ import {SiteElement, SiteLayout} from "../Models/SiteLayoutModel";
  *
  * @param elField
  */
-export function transformSiteElementType<T>(elField: SiteElementInterface<unknown>): SiteElementInterface<T> {
-  return elField as SiteElementInterface<T>;
+export function transformSiteElementType<T>(elField: SiteElement<unknown>): SiteElement<T> {
+  return elField as SiteElement<T>;
 }
 
 /**

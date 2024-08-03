@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {SiteElementHeadlineInterface} from "../../../Interfaces/SiteLayoutInterface";
 import {CommonModule} from "@angular/common";
 import {DropdownOptions, DropdownOptionsInterface} from "../../../Interfaces/DropdownOptionsInterface";
 import {FormsModule} from "@angular/forms";
@@ -8,6 +7,10 @@ import {InputTextModule} from "primeng/inputtext";
 import {Button} from "primeng/button";
 import {BaseFieldComponent} from "../../../Classes/BaseFieldComponent";
 import {headerLayoutOptions} from "../../../Configs/DropdownOptions";
+import {SiteElementHeadline} from "../../../Models/SiteLayoutModel";
+
+class SiteElementHead {
+}
 
 /**
  * Headline Field Element
@@ -29,7 +32,7 @@ import {headerLayoutOptions} from "../../../Configs/DropdownOptions";
   templateUrl: './headline-field.component.html',
   styleUrl: './headline-field.component.scss'
 })
-export class HeadlineFieldComponent extends BaseFieldComponent<SiteElementHeadlineInterface> implements OnInit {
+export class HeadlineFieldComponent extends BaseFieldComponent<SiteElementHeadline> implements OnInit {
   // Temporary value (before it's saved)
   public headlineValue: string = '';
 
@@ -45,7 +48,7 @@ export class HeadlineFieldComponent extends BaseFieldComponent<SiteElementHeadli
     return m || headerLayoutOptions[0];
   }
   public set headerLayout(option: DropdownOptionsInterface) {
-    this.elementConfig.element.layout = option.value;
+    this.elementConfig.element.layout = ( typeof option.value === 'string' ) ? parseInt(option.value) : option.value;
   }
 
   /**

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {BasePreviewComponent} from "../../../Classes/BasePreviewComponent";
-import {SiteElementLinkInterface} from "../../../Interfaces/SiteLayoutInterface";
+import {SiteElementLink} from "../../../Models/SiteLayoutModel";
 
 @Component({
   selector: 'link-preview',
@@ -9,6 +9,6 @@ import {SiteElementLinkInterface} from "../../../Interfaces/SiteLayoutInterface"
   templateUrl: './link-preview.component.html',
   styleUrl: './link-preview.component.scss'
 })
-export class LinkPreviewComponent extends BasePreviewComponent<SiteElementLinkInterface> {
+export class LinkPreviewComponent extends BasePreviewComponent<SiteElementLink> {
 
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {BasePreviewComponent} from "../../../Classes/BasePreviewComponent";
-import {SiteElementImageInterface} from "../../../Interfaces/SiteLayoutInterface";
+import {SiteElementImage} from "../../../Models/SiteLayoutModel";
 
 @Component({
   selector: 'image-preview',
@@ -9,6 +9,6 @@ import {SiteElementImageInterface} from "../../../Interfaces/SiteLayoutInterface
   templateUrl: './image-preview.component.html',
   styleUrl: './image-preview.component.scss'
 })
-export class ImagePreviewComponent extends BasePreviewComponent<SiteElementImageInterface> {
+export class ImagePreviewComponent extends BasePreviewComponent<SiteElementImage> {
 
 }

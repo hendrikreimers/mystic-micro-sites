@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {SiteElementLinkInterface} from "../../../Interfaces/SiteLayoutInterface";
 import {BaseFieldComponent} from "../../../Classes/BaseFieldComponent";
 import {Button} from "primeng/button";
 import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {GeneralConfig} from "../../../Configs/GeneralConfig";
+import {SiteElementLink} from "../../../Models/SiteLayoutModel";
 
 @Component({
   selector: 'link-field',
@@ -19,7 +19,7 @@ import {GeneralConfig} from "../../../Configs/GeneralConfig";
   templateUrl: './link-field.component.html',
   styleUrl: './link-field.component.scss'
 })
-export class LinkFieldComponent extends BaseFieldComponent<SiteElementLinkInterface> implements OnInit {
+export class LinkFieldComponent extends BaseFieldComponent<SiteElementLink> implements OnInit {
   // Temporary value (before it's saved)
   public titleValue: string = '';
   public hrefValue: string = '';

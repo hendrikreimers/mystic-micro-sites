@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {SiteElementImageInterface} from "../../../Interfaces/SiteLayoutInterface";
 import {BaseFieldComponent} from "../../../Classes/BaseFieldComponent";
 import {ElementDefaultValues} from "../../../Configs/ElementDefaults";
 import {ImageProcessor} from "../../../Processors/ImageProcessor";
 import {CommonModule} from "@angular/common";
 import {Button} from "primeng/button";
+import {SiteElementImage} from "../../../Models/SiteLayoutModel";
 
 @Component({
   selector: 'image-field',
@@ -16,7 +16,7 @@ import {Button} from "primeng/button";
   templateUrl: './image-field.component.html',
   styleUrl: './image-field.component.scss'
 })
-export class ImageFieldComponent extends BaseFieldComponent<SiteElementImageInterface> implements OnInit {
+export class ImageFieldComponent extends BaseFieldComponent<SiteElementImage> implements OnInit {
   // Define basics
   public processedImage: string | undefined; // Temporary image storage before save button pressed
   public errorMessage: string | undefined; // Error message variable
