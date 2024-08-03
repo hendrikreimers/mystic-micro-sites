@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SiteElementText} from "../../../Models/SiteLayoutModel";
+import {SiteElementTextInterface} from "../../../Interfaces/SiteLayoutModel";
 import {BaseFieldComponent} from "../../../Classes/BaseFieldComponent";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {Button} from "primeng/button";
@@ -18,7 +18,7 @@ import {InputTextModule} from "primeng/inputtext";
   templateUrl: './text-field.component.html',
   styleUrl: './text-field.component.scss'
 })
-export class TextFieldComponent extends BaseFieldComponent<SiteElementText> implements OnInit {
+export class TextFieldComponent extends BaseFieldComponent<SiteElementTextInterface> implements OnInit {
   // Temporary value (before it's saved)
   public textValue: string = '';
 

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {SiteElement} from "../Models/SiteLayoutModel";
+import {SiteElementInterface} from "../Interfaces/SiteLayoutModel";
 import {CommonModule} from "@angular/common";
 
 /**
@@ -15,12 +15,12 @@ import {CommonModule} from "@angular/common";
 })
 export class BaseFieldComponent<T> {
   // Event Emitters
-  @Output() elementChange: EventEmitter<SiteElement<T>> = new EventEmitter<SiteElement<T>>();
+  @Output() elementChange: EventEmitter<SiteElementInterface<T>> = new EventEmitter<SiteElementInterface<T>>();
   @Output() elementRemove: EventEmitter<string> = new EventEmitter<string>();
 
   // Component Attributes
   @Input() uid!: string; // Unique Identifier (UID)
-  @Input() elementConfig!: SiteElement<T>; // Element Configuration (Generic)
+  @Input() elementConfig!: SiteElementInterface<T>; // Element Configuration (Generic)
 
   /**
    * Triggers the event (especially on parent) to submit changes

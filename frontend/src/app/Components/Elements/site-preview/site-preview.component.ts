@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {SiteLayoutModel} from "../../../Models/SiteLayoutModel";
+import {SiteLayoutInterface} from "../../../Interfaces/SiteLayoutModel";
 import {ElementDefaultValues} from "../../../Configs/ElementDefaults";
 import {CommonModule} from "@angular/common";
 import {transformSiteElementType} from "../../../Utility/TransformUtility";
@@ -24,7 +24,7 @@ import {HeadlinePreviewComponent} from "../headline-preview/headline-preview.com
 })
 export class SitePreviewComponent implements OnInit {
   // Basic variables and component attributes
-  @Input() siteLayout: SiteLayoutModel = {
+  @Input() siteLayout: SiteLayoutInterface = {
     textColor: ElementDefaultValues.textColor,
     bgColor: ElementDefaultValues.bgColor,
     fontFamily: ElementDefaultValues.fontFamily,

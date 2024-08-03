@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DialogModule} from "primeng/dialog";
 import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
-import {ButtonPressedTypes, DialogEventData} from "../../../Models/DialogDataModel";
+import {ButtonPressedTypes, DialogEventDataInterface} from "../../../Interfaces/DialogDataInterface";
 import {FormsModule} from "@angular/forms";
 
 /**
@@ -25,7 +25,7 @@ import {FormsModule} from "@angular/forms";
 export class SaveDialogComponent {
   // Component Arguments and Events
   @Input() visible: boolean = false;
-  @Output() buttonClicked: EventEmitter<DialogEventData> = new EventEmitter<DialogEventData>();
+  @Output() buttonClicked: EventEmitter<DialogEventDataInterface> = new EventEmitter<DialogEventDataInterface>();
 
   // Password getter/setter
   private _password: string = '';

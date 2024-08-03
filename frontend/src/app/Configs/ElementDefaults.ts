@@ -1,4 +1,4 @@
-import {FontFamilies} from "../Models/SiteLayoutModel";
+import {FontFamilies} from "../Interfaces/SiteLayoutModel";
 
 /**
  * Default values for the element field inputs

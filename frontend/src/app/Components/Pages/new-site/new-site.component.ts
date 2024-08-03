@@ -4,14 +4,14 @@ import {Router, RouterLink} from "@angular/router";
 import {ButtonGroupModule} from "primeng/buttongroup";
 import {
   FontFamilies,
-  SiteElement,
-  SiteElementHeadline,
-  SiteElementImage,
-  SiteElementLink,
+  SiteElementInterface,
+  SiteElementHeadlineInterface,
+  SiteElementImageInterface,
+  SiteElementLinkInterface,
   SiteElements, SiteElementsTypes,
-  SiteElementText,
-  SiteLayoutModel
-} from "../../../Models/SiteLayoutModel";
+  SiteElementTextInterface,
+  SiteLayoutInterface
+} from "../../../Interfaces/SiteLayoutModel";
 import {CommonModule} from "@angular/common";
 import {HeadlineFieldComponent} from "../../Elements/headline-field/headline-field.component";
 import {v6 as uuidv6} from 'uuid';
@@ -21,13 +21,13 @@ import {TextFieldComponent} from "../../Elements/text-field/text-field.component
 import {ElementDefaultValues} from "../../../Configs/ElementDefaults";
 import {ColorPickerModule} from "primeng/colorpicker";
 import {FormsModule} from "@angular/forms";
-import {DropdownOptions, DropdownOptionsModel} from "../../../Models/DropdownOptionsModel";
+import {DropdownOptions, DropdownOptionsInterface} from "../../../Interfaces/DropdownOptionsInterface";
 import {DropdownModule} from "primeng/dropdown";
 import {fontFamilyOptions} from "../../../Configs/DropdownOptions";
 import {SitePreviewComponent} from "../../Elements/site-preview/site-preview.component";
 import {base64Decode, base64Encode, transformSiteElementType} from "../../../Utility/TransformUtility";
 import {SaveDialogComponent} from "../../Molecules/save-dialog/save-dialog.component";
-import {DialogEventData} from "../../../Models/DialogDataModel";
+import {DialogEventDataInterface} from "../../../Interfaces/DialogDataInterface";
 import {GlobalContextStorageService} from "../../../Service/globalContextStorage.service";
 
 /**
@@ -67,7 +67,7 @@ export class NewSiteComponent implements OnInit {
   /**
    * Initialize SiteLayout
    */
-  protected siteLayout: SiteLayoutModel = {
+  protected siteLayout: SiteLayoutInterface = {
     textColor: ElementDefaultValues.textColor,
     bgColor: ElementDefaultValues.bgColor,
     fontFamily: ElementDefaultValues.fontFamily,
@@ -75,14 +75,14 @@ export class NewSiteComponent implements OnInit {
   };
 
   // DROPDOWN - fontFamily / Getter and Setter
-  protected get fontFamily(): DropdownOptionsModel {
-    const m: DropdownOptionsModel | undefined = fontFamilyOptions.find( (lo: DropdownOptionsModel): boolean =>
+  protected get fontFamily(): DropdownOptionsInterface {
+    const m: DropdownOptionsInterface | undefined = fontFamilyOptions.find( (lo: DropdownOptionsInterface): boolean =>
       lo.value === this.siteLayout.fontFamily
     );
 
     return m || fontFamilyOptions[0];
   }
-  protected set fontFamily(option: DropdownOptionsModel) {
+  protected set fontFamily(option: DropdownOptionsInterface) {
     this.siteLayout.fontFamily = option.value as FontFamilies;
   }
 
@@ -99,7 +99,7 @@ export class NewSiteComponent implements OnInit {
     const savedSiteLayout = this.globalStorageService.getStorageValue('saveSite.siteLayoutEncoded');
 
     if ( typeof savedSiteLayout === 'string' ) {
-      this.siteLayout = base64Decode(savedSiteLayout) as SiteLayoutModel;
+      this.siteLayout = base64Decode(savedSiteLayout) as SiteLayoutInterface;
     }
   }
 
@@ -111,7 +111,7 @@ export class NewSiteComponent implements OnInit {
   protected addElement(elName: SiteElementsTypes): void {
     // ELEMENT: Headline
     if ( elName === 'headline' ) {
-      const newType: SiteElement<SiteElementHeadline> = this.getNewElementBasicConfig('headline', {
+      const newType: SiteElementInterface<SiteElementHeadlineInterface> = this.getNewElementBasicConfig('headline', {
         layout: 1,
         value: ElementDefaultValues.headline
       });
@@ -121,7 +121,7 @@ export class NewSiteComponent implements OnInit {
 
     // ELEMENT: Text
     if ( elName === 'text' ) {
-      const newType: SiteElement<SiteElementText> = this.getNewElementBasicConfig<SiteElementText>('text', {
+      const newType: SiteElementInterface<SiteElementTextInterface> = this.getNewElementBasicConfig<SiteElementTextInterface>('text', {
         value: ElementDefaultValues.text
       });
 
@@ -130,7 +130,7 @@ export class NewSiteComponent implements OnInit {
 
     // ELEMENT: Image
     if ( elName === 'image' ) {
-      const newType: SiteElement<SiteElementImage> = this.getNewElementBasicConfig<SiteElementImage>('image', {
+      const newType: SiteElementInterface<SiteElementImageInterface> = this.getNewElementBasicConfig<SiteElementImageInterface>('image', {
         imageData: ElementDefaultValues.imageData
       });
 
@@ -139,7 +139,7 @@ export class NewSiteComponent implements OnInit {
 
     // ELEMENT: Link
     if ( elName === 'link' ) {
-      const newType: SiteElement<SiteElementLink> = this.getNewElementBasicConfig<SiteElementLink>('link', {
+      const newType: SiteElementInterface<SiteElementLinkInterface> = this.getNewElementBasicConfig<SiteElementLinkInterface>('link', {
         title: ElementDefaultValues.linkTitle,
         href: ElementDefaultValues.linkHref
       })
@@ -154,8 +154,8 @@ export class NewSiteComponent implements OnInit {
    * @param type
    * @param elementConfig
    */
-  protected getNewElementBasicConfig<R>(type: SiteElementsTypes, elementConfig: R): SiteElement<R> {
-    return <SiteElement<R>>{
+  protected getNewElementBasicConfig<R>(type: SiteElementsTypes, elementConfig: R): SiteElementInterface<R> {
+    return <SiteElementInterface<R>>{
       uid: uuidv6(),
       type: type,
       element: elementConfig
@@ -168,7 +168,7 @@ export class NewSiteComponent implements OnInit {
    * @param dialogData
    * @protected
    */
-  protected onSaveDialogButtonClick(dialogData: DialogEventData): void {
+  protected onSaveDialogButtonClick(dialogData: DialogEventDataInterface): void {
     this.showSaveDialog = false;
 
     // Only do the magic if the save button is really pressed and there's a master pass entered
@@ -191,7 +191,7 @@ export class NewSiteComponent implements OnInit {
    * @param uid
    */
   protected onElementRemove(uid: string): void {
-    this.siteLayout.elements = this.siteLayout.elements.filter((element: SiteElement<SiteElements>): boolean =>
+    this.siteLayout.elements = this.siteLayout.elements.filter((element: SiteElementInterface<SiteElements>): boolean =>
       element.uid !== uid
     );
   }
@@ -201,8 +201,8 @@ export class NewSiteComponent implements OnInit {
    *
    * @param elField
    */
-  protected onElementChange(elField: SiteElement<SiteElements>): void {
-    this.siteLayout.elements.map((element: SiteElement<SiteElements>): SiteElement<SiteElements> =>
+  protected onElementChange(elField: SiteElementInterface<SiteElements>): void {
+    this.siteLayout.elements.map((element: SiteElementInterface<SiteElements>): SiteElementInterface<SiteElements> =>
       ( element.uid === elField.uid ) ? elField : element
     );
   }
@@ -213,7 +213,7 @@ export class NewSiteComponent implements OnInit {
    * @param uid
    */
   protected moveElementUp(uid: string): void {
-    const index: number = this.siteLayout.elements.findIndex((el: SiteElement<SiteElements>): boolean =>
+    const index: number = this.siteLayout.elements.findIndex((el: SiteElementInterface<SiteElements>): boolean =>
       el.uid === uid
     );
 
@@ -228,7 +228,7 @@ export class NewSiteComponent implements OnInit {
    * @param uid
    */
   protected moveElementDown(uid: string): void {
-    const index: number = this.siteLayout.elements.findIndex((el:SiteElement<any>): boolean =>
+    const index: number = this.siteLayout.elements.findIndex((el:SiteElementInterface<any>): boolean =>
       el.uid === uid
     );
 

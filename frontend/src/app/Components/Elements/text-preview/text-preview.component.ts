@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {BasePreviewComponent} from "../../../Classes/BasePreviewComponent";
-import {SiteElementText} from "../../../Models/SiteLayoutModel";
+import {SiteElementTextInterface} from "../../../Interfaces/SiteLayoutModel";
 
 @Component({
   selector: 'text-preview',
@@ -9,6 +9,6 @@ import {SiteElementText} from "../../../Models/SiteLayoutModel";
   templateUrl: './text-preview.component.html',
   styleUrl: './text-preview.component.scss'
 })
-export class TextPreviewComponent extends BasePreviewComponent<SiteElementText> {
+export class TextPreviewComponent extends BasePreviewComponent<SiteElementTextInterface> {
 
 }

@@ -2,26 +2,26 @@
 /**
  * Type Definitions
  */
-export type SiteElements = SiteElementHeadline | SiteElementText | SiteElementLink | SiteElementImage;
+export type SiteElements = SiteElementHeadlineInterface | SiteElementTextInterface | SiteElementLinkInterface | SiteElementImageInterface;
 export type SiteElementsTypes = 'headline' | 'text' | 'image' | 'link';
 export type FontFamilies = 'Arial' | 'Helvetica' | 'sans-serif' | 'TimesNewRoman' | 'CourierNewRoman' | 'ComicSansMS';
 
 /**
  * Basic Site Layout Interface
  */
-export interface SiteLayoutModel {
+export interface SiteLayoutInterface {
   textColor: string;
   bgColor: string;
   fontFamily: FontFamilies;
 
-  elements: SiteElement[];
+  elements: SiteElementInterface[];
 }
 
 /**
  * Basic Element Configuration
  * It's a generic Interface. It makes it easier to use it in typescript to force and identify that element type.
  */
-export interface SiteElement<T> {
+export interface SiteElementInterface<T> {
   uid: string;
   type: SiteElementsTypes;
   element: T;
@@ -30,7 +30,7 @@ export interface SiteElement<T> {
 /**
  * Element Interface: Headline
  */
-export interface SiteElementHeadline {
+export interface SiteElementHeadlineInterface {
   layout: int;
   value: string;
 }
@@ -38,21 +38,21 @@ export interface SiteElementHeadline {
 /**
  * Element Interface: Text
  */
-export interface SiteElementText {
+export interface SiteElementTextInterface {
   value: string;
 }
 
 /**
  * Element Interface: Image
  */
-export interface SiteElementImage {
+export interface SiteElementImageInterface {
   imageData: string;
 }
 
 /**
  * Element Interface: Link
  */
-export interface SiteElementLink {
+export interface SiteElementLinkInterface {
   title: string;
   href: string;
 }

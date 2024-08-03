@@ -1,5 +1,5 @@
-import {ApiConfigModel} from "../Models/ApiConfigModel";
+import {ApiConfigInterface} from "../Interfaces/ApiConfigInterface";
 
-export const ApiConfig: ApiConfigModel = {
+export const ApiConfig: ApiConfigInterface = {
   apiUrl: '/api.php'
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {BasePreviewComponent} from "../../../Classes/BasePreviewComponent";
-import {SiteElementHeadline} from "../../../Models/SiteLayoutModel";
+import {SiteElementHeadlineInterface} from "../../../Interfaces/SiteLayoutModel";
 import {NgSwitch, NgSwitchCase} from "@angular/common";
 
 @Component({
@@ -13,6 +13,6 @@ import {NgSwitch, NgSwitchCase} from "@angular/common";
   templateUrl: './headline-preview.component.html',
   styleUrl: './headline-preview.component.scss'
 })
-export class HeadlinePreviewComponent extends BasePreviewComponent<SiteElementHeadline> {
+export class HeadlinePreviewComponent extends BasePreviewComponent<SiteElementHeadlineInterface> {
 
 }

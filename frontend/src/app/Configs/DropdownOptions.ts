@@ -1,4 +1,4 @@
-import {DropdownOptions} from "../Models/DropdownOptionsModel";
+import {DropdownOptions} from "../Interfaces/DropdownOptionsInterface";
 
 /**
  * Dropdown Options: Font Family

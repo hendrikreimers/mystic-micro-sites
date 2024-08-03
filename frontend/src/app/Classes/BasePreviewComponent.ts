@@ -1,5 +1,5 @@
 import {Component, Input} from "@angular/core";
-import {SiteElement} from "../Models/SiteLayoutModel";
+import {SiteElementInterface} from "../Interfaces/SiteLayoutModel";
 import {CommonModule} from "@angular/common";
 
 /**
@@ -16,5 +16,5 @@ import {CommonModule} from "@angular/common";
 export class BasePreviewComponent<T> {
   // Component Attributes
   @Input() uid!: string; // Unique Identifier (UID)
-  @Input() elementConfig!: SiteElement<T>; // Element Configuration (Generic)
+  @Input() elementConfig!: SiteElementInterface<T>; // Element Configuration (Generic)
 }

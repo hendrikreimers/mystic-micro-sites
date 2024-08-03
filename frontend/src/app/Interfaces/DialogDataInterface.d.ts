@@ -6,7 +6,7 @@ export type ButtonPressedTypes = 'saveBtn' | 'cancelBtn' | 'closeBtn';
 /**
  * Event Emitter Data Object
  */
-export interface DialogEventData {
+export interface DialogEventDataInterface {
   buttonPressed: ButtonPressedTypes;
   args?: {[key: string]: string}
 }
