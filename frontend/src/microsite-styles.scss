@@ -47,6 +47,7 @@
   a {
     @apply
       bg-white
+      bg-opacity-50
       py-2
       px-3
       m-4
@@ -88,6 +89,7 @@
   @apply
     text-black
     bg-gray-100
+    bg-opacity-75
     border-gray-400
     border-2
     border-solid
