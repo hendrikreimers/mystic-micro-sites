@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Template;
 
+use Utility\StringUtlity;
+
 /**
  * Template Engine View
  *
@@ -129,13 +131,7 @@ class TemplateView {
    */
   private function handleValueEscape(mixed $value): mixed {
     if ( is_string($value) ) {
-      if ( $this->stripTags ) {
-        $value = strip_tags($value);
-      }
-
-      if ( $this->escapeString ) {
-        $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-      }
+      $value = StringUtlity::escapeString($value, false, $this->escapeString, $this->stripTags);
     }
 
     return $value;

@@ -16,10 +16,24 @@ class StringUtlity {
    *
    * @param string $string
    * @param bool $trim
+   * @param bool $escapeString
+   * @param bool $stripTags
    * @return string
    */
-  public static function escapeString(string $string, bool $trim = false): string {
-    return htmlspecialchars(strip_tags($string), ENT_QUOTES, 'UTF-8');
+  public static function escapeString(string $string, bool $trim = false, bool $escapeString = true, bool $stripTags = true): string {
+    if ( $stripTags ) {
+      $string = strip_tags($string);
+    }
+
+    if ( $escapeString ) {
+      $string = htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+    }
+
+    if ( $trim ) {
+      $string = trim($string);
+    }
+
+    return $string;
   }
 
   /**
