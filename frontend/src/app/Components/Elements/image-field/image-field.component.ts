@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SiteElementImageInterface} from "../../../Interfaces/SiteLayoutModel";
+import {SiteElementImageInterface} from "../../../Interfaces/SiteLayoutInterface";
 import {BaseFieldComponent} from "../../../Classes/BaseFieldComponent";
 import {ElementDefaultValues} from "../../../Configs/ElementDefaults";
 import {ImageProcessor} from "../../../Processors/ImageProcessor";

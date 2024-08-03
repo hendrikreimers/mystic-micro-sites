@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SiteElementLinkInterface} from "../../../Interfaces/SiteLayoutModel";
+import {SiteElementLinkInterface} from "../../../Interfaces/SiteLayoutInterface";
 import {BaseFieldComponent} from "../../../Classes/BaseFieldComponent";
 import {Button} from "primeng/button";
 import {DropdownModule} from "primeng/dropdown";

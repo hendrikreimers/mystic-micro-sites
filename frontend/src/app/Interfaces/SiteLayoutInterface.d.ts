@@ -15,6 +15,8 @@ export interface SiteLayoutInterface {
   fontFamily: FontFamilies;
 
   elements: SiteElementInterface[];
+
+  toJSON(): SiteLayoutInterface;
 }
 
 /**
@@ -25,6 +27,8 @@ export interface SiteElementInterface<T> {
   uid: string;
   type: SiteElementsTypes;
   element: T;
+
+  toJSON(): SiteElementInterface<T>;
 }
 
 /**
@@ -33,6 +37,8 @@ export interface SiteElementInterface<T> {
 export interface SiteElementHeadlineInterface {
   layout: int;
   value: string;
+
+  toJSON(): SiteElementHeadlineInterface;
 }
 
 /**
@@ -40,6 +46,8 @@ export interface SiteElementHeadlineInterface {
  */
 export interface SiteElementTextInterface {
   value: string;
+
+  toJSON(): SiteElementTextInterface;
 }
 
 /**
@@ -47,6 +55,8 @@ export interface SiteElementTextInterface {
  */
 export interface SiteElementImageInterface {
   imageData: string;
+
+  toJSON(): SiteElementImageInterface;
 }
 
 /**
@@ -55,4 +65,6 @@ export interface SiteElementImageInterface {
 export interface SiteElementLinkInterface {
   title: string;
   href: string;
+
+  toJSON(): SiteElementLinkInterface;
 }

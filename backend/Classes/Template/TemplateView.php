@@ -132,6 +132,10 @@ class TemplateView {
   private function handleValueEscape(mixed $value): mixed {
     if ( is_string($value) ) {
       $value = StringUtlity::escapeString($value, false, $this->escapeString, $this->stripTags);
+
+      // Fix for double escaped
+      $expr = '/&amp;(amp|lt|gt|quot|#\d+;)/m';
+      $value = preg_replace($expr, '&$1', $value);
     }
 
     return $value;

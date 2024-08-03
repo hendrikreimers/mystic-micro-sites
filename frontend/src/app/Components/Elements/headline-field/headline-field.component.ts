@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SiteElementHeadlineInterface} from "../../../Interfaces/SiteLayoutModel";
+import {SiteElementHeadlineInterface} from "../../../Interfaces/SiteLayoutInterface";
 import {CommonModule} from "@angular/common";
 import {DropdownOptions, DropdownOptionsInterface} from "../../../Interfaces/DropdownOptionsInterface";
 import {FormsModule} from "@angular/forms";

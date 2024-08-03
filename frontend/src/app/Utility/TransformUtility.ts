@@ -4,7 +4,8 @@
   *
   * @param elField
   */
-import {SiteElementInterface} from "../Interfaces/SiteLayoutModel";
+import {SiteElementInterface, SiteElements} from "../Interfaces/SiteLayoutInterface";
+import {SiteElement, SiteLayout} from "../Models/SiteLayoutModel";
 
 /**
  * Forces the correct return type.
@@ -21,7 +22,15 @@ export function transformSiteElementType<T>(elField: SiteElementInterface<unknow
  *
  * @param value
  */
-export function base64Encode(value: string | object): string {
+export function base64Encode(value: string | object | SiteLayout | SiteElements | SiteElement<any>): string {
+  // Type guard to check if the value is an object and not null
+  if (typeof value === 'object' && value !== null) {
+    // Check if the value has a 'toJSON' method
+    if (typeof (value as any).getJSONString === 'function') {
+      value = (value as any).getJSONString();
+    }
+  }
+
   return ( typeof value === "string" ) ? btoa(value) : btoa(JSON.stringify(value));
 }
 

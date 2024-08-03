@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {BasePreviewComponent} from "../../../Classes/BasePreviewComponent";
-import {SiteElementTextInterface} from "../../../Interfaces/SiteLayoutModel";
+import {SiteElementTextInterface} from "../../../Interfaces/SiteLayoutInterface";
 
 @Component({
   selector: 'text-preview',

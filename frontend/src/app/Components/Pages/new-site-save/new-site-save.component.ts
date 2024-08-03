@@ -7,6 +7,8 @@ import {ApiService} from "../../../Service/api.service";
 import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {QRCodeModule} from "angularx-qrcode";
+import {base64Encode} from "../../../Utility/TransformUtility";
+import {SiteLayout} from "../../../Models/SiteLayoutModel";
 
 @Component({
   selector: 'app-new-site-save',
@@ -47,7 +49,13 @@ export class NewSiteSaveComponent implements OnInit {
    */
   ngOnInit(): void {
     const masterPasswordEncoded: string | undefined = this.globalStorageService.getStorageValue('saveSite.passwordEncoded');
-    const siteLayoutEncoded: string | undefined = this.globalStorageService.getStorageValue('saveSite.siteLayoutEncoded');
+    const siteLayout: SiteLayout | undefined = this.globalStorageService.getStorageValue('saveSite.siteLayout');
+    let siteLayoutEncoded: string | undefined = undefined;
+
+    // Transform siteLayout for transmission
+    if ( siteLayout ) {
+      siteLayoutEncoded = base64Encode(siteLayout.getJSONString());
+    }
 
     // Show error message if something is missing
     if ( !masterPasswordEncoded || !siteLayoutEncoded ) {

@@ -2,16 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Button, ButtonDirective} from "primeng/button";
 import {Router, RouterLink} from "@angular/router";
 import {ButtonGroupModule} from "primeng/buttongroup";
-import {
-  FontFamilies,
-  SiteElementInterface,
-  SiteElementHeadlineInterface,
-  SiteElementImageInterface,
-  SiteElementLinkInterface,
-  SiteElements, SiteElementsTypes,
-  SiteElementTextInterface,
-  SiteLayoutInterface
-} from "../../../Interfaces/SiteLayoutModel";
+import {FontFamilies, SiteElementInterface, SiteElements, SiteElementsTypes} from "../../../Interfaces/SiteLayoutInterface";
 import {CommonModule} from "@angular/common";
 import {HeadlineFieldComponent} from "../../Elements/headline-field/headline-field.component";
 import {v6 as uuidv6} from 'uuid';
@@ -29,6 +20,7 @@ import {base64Decode, base64Encode, transformSiteElementType} from "../../../Uti
 import {SaveDialogComponent} from "../../Molecules/save-dialog/save-dialog.component";
 import {DialogEventDataInterface} from "../../../Interfaces/DialogDataInterface";
 import {GlobalContextStorageService} from "../../../Service/globalContextStorage.service";
+import {SiteElement, SiteElementHeadline, SiteElementImage, SiteElementLink, SiteElementText, SiteLayout} from "../../../Models/SiteLayoutModel";
 
 /**
  * PAGE: New Site
@@ -67,12 +59,12 @@ export class NewSiteComponent implements OnInit {
   /**
    * Initialize SiteLayout
    */
-  protected siteLayout: SiteLayoutInterface = {
-    textColor: ElementDefaultValues.textColor,
-    bgColor: ElementDefaultValues.bgColor,
-    fontFamily: ElementDefaultValues.fontFamily,
-    elements: []
-  };
+  protected siteLayout: SiteLayout = new SiteLayout(
+    ElementDefaultValues.textColor,
+    ElementDefaultValues.bgColor,
+    ElementDefaultValues.fontFamily,
+    []
+  );
 
   // DROPDOWN - fontFamily / Getter and Setter
   protected get fontFamily(): DropdownOptionsInterface {
@@ -95,11 +87,15 @@ export class NewSiteComponent implements OnInit {
     private globalStorageService: GlobalContextStorageService
   ) {}
 
+  /**
+   * Angular's component initialization
+   *
+   */
   ngOnInit(): void {
     const savedSiteLayout = this.globalStorageService.getStorageValue('saveSite.siteLayoutEncoded');
 
     if ( typeof savedSiteLayout === 'string' ) {
-      this.siteLayout = base64Decode(savedSiteLayout) as SiteLayoutInterface;
+      this.siteLayout = base64Decode(savedSiteLayout) as SiteLayout;
     }
   }
 
@@ -111,38 +107,38 @@ export class NewSiteComponent implements OnInit {
   protected addElement(elName: SiteElementsTypes): void {
     // ELEMENT: Headline
     if ( elName === 'headline' ) {
-      const newType: SiteElementInterface<SiteElementHeadlineInterface> = this.getNewElementBasicConfig('headline', {
-        layout: 1,
-        value: ElementDefaultValues.headline
-      });
+      const newType: SiteElement<SiteElementHeadline> = this.getNewElementBasicConfig<SiteElementHeadline>('headline', new SiteElementHeadline(
+        1,
+        ElementDefaultValues.headline
+      ));
 
       this.siteLayout.elements.push(newType);
     }
 
     // ELEMENT: Text
     if ( elName === 'text' ) {
-      const newType: SiteElementInterface<SiteElementTextInterface> = this.getNewElementBasicConfig<SiteElementTextInterface>('text', {
-        value: ElementDefaultValues.text
-      });
+      const newType: SiteElement<SiteElementText> = this.getNewElementBasicConfig<SiteElementText>('text',  new SiteElementText(
+        ElementDefaultValues.text
+      ));
 
       this.siteLayout.elements.push(newType);
     }
 
     // ELEMENT: Image
     if ( elName === 'image' ) {
-      const newType: SiteElementInterface<SiteElementImageInterface> = this.getNewElementBasicConfig<SiteElementImageInterface>('image', {
-        imageData: ElementDefaultValues.imageData
-      });
+      const newType: SiteElement<SiteElementImage> = this.getNewElementBasicConfig<SiteElementImage>('image',  new SiteElementImage(
+        ElementDefaultValues.imageData
+      ));
 
       this.siteLayout.elements.push(newType);
     }
 
     // ELEMENT: Link
     if ( elName === 'link' ) {
-      const newType: SiteElementInterface<SiteElementLinkInterface> = this.getNewElementBasicConfig<SiteElementLinkInterface>('link', {
-        title: ElementDefaultValues.linkTitle,
-        href: ElementDefaultValues.linkHref
-      })
+      const newType: SiteElement<SiteElementLink> = this.getNewElementBasicConfig<SiteElementLink>('link',  new SiteElementLink(
+        ElementDefaultValues.linkTitle,
+        ElementDefaultValues.linkHref
+      ))
 
       this.siteLayout.elements.push(newType);
     }
@@ -154,12 +150,12 @@ export class NewSiteComponent implements OnInit {
    * @param type
    * @param elementConfig
    */
-  protected getNewElementBasicConfig<R>(type: SiteElementsTypes, elementConfig: R): SiteElementInterface<R> {
-    return <SiteElementInterface<R>>{
-      uid: uuidv6(),
-      type: type,
-      element: elementConfig
-    };
+  protected getNewElementBasicConfig<R>(type: SiteElementsTypes, elementConfig: R): SiteElement<R> {
+    return new SiteElement<R>(
+      uuidv6(),
+      type,
+      elementConfig
+    );
   }
 
   /**
@@ -174,10 +170,10 @@ export class NewSiteComponent implements OnInit {
     // Only do the magic if the save button is really pressed and there's a master pass entered
     if ( dialogData.buttonPressed === 'saveBtn' && dialogData.args && dialogData.args['masterPassword'].length > 0 ) {
       const masterPasswordEncoded: string = base64Encode(dialogData.args['masterPassword']);
-      const siteLayoutEncoded: string = base64Encode(this.siteLayout);
+      const siteLayout: SiteLayout = this.siteLayout;
 
       // Save to global storage
-      this.globalStorageService.setStorageValue('saveSite.siteLayoutEncoded', siteLayoutEncoded);
+      this.globalStorageService.setStorageValue('saveSite.siteLayout', siteLayout);
       this.globalStorageService.setStorageValue('saveSite.passwordEncoded', masterPasswordEncoded);
 
       // Redirect to save page

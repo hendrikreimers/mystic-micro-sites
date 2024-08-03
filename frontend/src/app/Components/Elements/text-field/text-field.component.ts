@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SiteElementTextInterface} from "../../../Interfaces/SiteLayoutModel";
+import {SiteElementTextInterface} from "../../../Interfaces/SiteLayoutInterface";
 import {BaseFieldComponent} from "../../../Classes/BaseFieldComponent";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {Button} from "primeng/button";

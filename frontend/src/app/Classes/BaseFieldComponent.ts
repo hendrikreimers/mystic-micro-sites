@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {SiteElementInterface} from "../Interfaces/SiteLayoutModel";
+import {SiteElementInterface} from "../Interfaces/SiteLayoutInterface";
 import {CommonModule} from "@angular/common";
 
 /**
