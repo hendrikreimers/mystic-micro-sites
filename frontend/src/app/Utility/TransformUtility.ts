@@ -4,7 +4,7 @@
   *
   * @param elField
   */
-import {SiteElement} from "../Models/SiteLayoutModel";
+import {SiteElementInterface} from "../Interfaces/SiteLayoutModel";
 
 /**
  * Forces the correct return type.
@@ -12,8 +12,8 @@ import {SiteElement} from "../Models/SiteLayoutModel";
  *
  * @param elField
  */
-export function transformSiteElementType<T>(elField: SiteElement<unknown>): SiteElement<T> {
-  return elField as SiteElement<T>;
+export function transformSiteElementType<T>(elField: SiteElementInterface<unknown>): SiteElementInterface<T> {
+  return elField as SiteElementInterface<T>;
 }
 
 /**
@@ -46,4 +46,42 @@ export function base64Decode(value: string): string | object {
     // Decoding failed
     return value;
   }
+}
+
+/**
+ * HTML String encoding
+ *
+ * @param value
+ */
+export function htmlEncode(value: string): string {
+  // Use mapping to convert predefined entities
+  const predefinedEntities: { [key: string]: string } = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+    //' ': '&nbsp;', // optional: encodes space as non-breaking space
+  };
+
+  // All other characters that are not in the ASCII range and have no predefined entities
+  // are converted into numeric HTML entities (e.g. © becomes &#169;)
+  return value.replace(/[\u00A0-\u9999<>&"']/g, (char): string => {
+    if (predefinedEntities[char]) {
+      return predefinedEntities[char];
+    }
+    return `&#${char.charCodeAt(0)};`;
+  });
+}
+
+/**
+ * HTML String decoding
+ *
+ * @param input
+ */
+export function htmlDecode(input: string): string {
+  // The fastest and best way is to use the browsers integrated functionality
+  const parser: DOMParser = new DOMParser();
+  const doc: Document = parser.parseFromString(input, 'text/html');
+  return doc.documentElement.textContent || '';
 }
