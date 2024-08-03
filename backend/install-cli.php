@@ -27,8 +27,9 @@ echo "Enter your master password: ";
 $MASTER_PASSWORD = trim(fgets(STDIN));
 echo "Enter your username: ";
 $USERNAME = trim(fgets(STDIN));
-echo "Enter base URL (like: https://your-site.com/path/";
+echo "Enter base URL (like: https://your-site.com/path): ";
 $BASE_URL = trim(fgets(STDIN));
+$BASE_URL = ( $BASE_URL[strlen($BASE_URL) - 1] === '/' ) ? substr($BASE_URL, 0, -1) : $BASE_URL; // Remove ending Slash
 
 // Create public/private key pairs
 $keyPair = $encryptionService->generateKeyPair();
