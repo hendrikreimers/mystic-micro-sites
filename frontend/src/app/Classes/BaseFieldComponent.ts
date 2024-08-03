@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {SiteElement} from "../Models/SiteLayoutModel";
+import {SiteElement} from "../Models/SiteElementModel";
 
 /**
  * Base Component for Field Elements

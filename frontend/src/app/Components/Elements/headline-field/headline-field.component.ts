@@ -7,7 +7,8 @@ import {InputTextModule} from "primeng/inputtext";
 import {Button} from "primeng/button";
 import {BaseFieldComponent} from "../../../Classes/BaseFieldComponent";
 import {headerLayoutOptions} from "../../../Configs/DropdownOptions";
-import {SiteElementHeadline} from "../../../Models/SiteLayoutModel";
+
+import {SiteElementHeadline} from "../../../Models/SiteElementHeadlineModel";
 
 class SiteElementHead {
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {BasePreviewComponent} from "../../../Classes/BasePreviewComponent";
-import {SiteElementImage} from "../../../Models/SiteLayoutModel";
+
+import {SiteElementImage} from "../../../Models/SiteElementImageModel";
 
 @Component({
   selector: 'image-preview',

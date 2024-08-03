@@ -16,5 +16,9 @@
       *ngSwitchCase="'link'"
       [elementConfig]="transformSiteElementType(elField)"
       [uid]="elField.uid" />
+    <vcard-preview
+      *ngSwitchCase="'vcard'"
+      [elementConfig]="transformSiteElementType(elField)"
+      [uid]="elField.uid" />
   </div>
 </div>

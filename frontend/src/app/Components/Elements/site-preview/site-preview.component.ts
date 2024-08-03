@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {ElementDefaultValues} from "../../../Configs/ElementDefaults";
 import {CommonModule} from "@angular/common";
 import {transformSiteElementType} from "../../../Utility/TransformUtility";
@@ -7,6 +7,7 @@ import {ImagePreviewComponent} from "../image-preview/image-preview.component";
 import {LinkPreviewComponent} from "../link-preview/link-preview.component";
 import {HeadlinePreviewComponent} from "../headline-preview/headline-preview.component";
 import {SiteLayout} from "../../../Models/SiteLayoutModel";
+import {VcardPreviewComponent} from "../vcard-preview/vcard-preview.component";
 
 /**
  * PAGE: Preview Component
@@ -20,13 +21,14 @@ import {SiteLayout} from "../../../Models/SiteLayoutModel";
     TextPreviewComponent,
     ImagePreviewComponent,
     LinkPreviewComponent,
-    HeadlinePreviewComponent
+    HeadlinePreviewComponent,
+    VcardPreviewComponent
   ],
   templateUrl: './site-preview.component.html',
   styleUrl: './site-preview.component.scss',
   encapsulation: ViewEncapsulation.ShadowDom
 })
-export class SitePreviewComponent implements OnInit {
+export class SitePreviewComponent {
   // Basic variables and component attributes
   @Input() siteLayout: SiteLayout = new SiteLayout(
     ElementDefaultValues.textColor,
@@ -34,10 +36,6 @@ export class SitePreviewComponent implements OnInit {
     ElementDefaultValues.fontFamily,
     []
   );
-
-  ngOnInit(): void {
-
-  }
 
   protected readonly transformSiteElementType = transformSiteElementType;
 }

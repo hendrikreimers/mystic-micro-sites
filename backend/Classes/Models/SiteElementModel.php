@@ -20,9 +20,9 @@ class SiteElementModel {
   public SiteElementsTypesEnum $type;
 
   /**
-   * @var SiteElementHeadlineModel|SiteElementTextModel|SiteElementImageModel|SiteElementLinkModel|mixed
+   * @var SiteElementHeadlineModel | SiteElementTextModel | SiteElementImageModel | SiteElementLinkModel | SiteElementVCardModel | mixed
    */
-  public SiteElementHeadlineModel | SiteElementTextModel | SiteElementImageModel | SiteElementLinkModel $element;
+  public SiteElementHeadlineModel | SiteElementTextModel | SiteElementImageModel | SiteElementLinkModel | SiteElementVCardModel $element;
 
   /**
    * Constructor
@@ -55,6 +55,7 @@ class SiteElementModel {
       SiteElementsTypesEnum::Text => SiteElementTextModel::fromArray($data['element']),
       SiteElementsTypesEnum::Image => SiteElementImageModel::fromArray($data['element']),
       SiteElementsTypesEnum::Link => SiteElementLinkModel::fromArray($data['element']),
+      SiteElementsTypesEnum::VCard => SiteElementVCardModel::fromArray($data['element'])
     };
 
     return new self(

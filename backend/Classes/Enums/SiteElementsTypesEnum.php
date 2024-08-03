@@ -8,4 +8,5 @@ enum SiteElementsTypesEnum: string {
   case Text = 'text';
   case Image = 'image';
   case Link = 'link';
+  case VCard = 'vcard';
 }

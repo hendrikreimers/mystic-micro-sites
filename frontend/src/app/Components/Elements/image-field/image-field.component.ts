@@ -4,7 +4,8 @@ import {ElementDefaultValues} from "../../../Configs/ElementDefaults";
 import {ImageProcessor} from "../../../Processors/ImageProcessor";
 import {CommonModule} from "@angular/common";
 import {Button} from "primeng/button";
-import {SiteElementImage} from "../../../Models/SiteLayoutModel";
+
+import {SiteElementImage} from "../../../Models/SiteElementImageModel";
 
 @Component({
   selector: 'image-field',

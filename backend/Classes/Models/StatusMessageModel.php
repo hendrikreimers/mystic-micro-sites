@@ -5,17 +5,13 @@ namespace Models;
 
 class StatusMessageModel {
   /**
-   * @var int
+   * Constructor
+   *
+   * @param int $statusCode
+   * @param string $message
    */
-  public int $statusCode;
-
-  /**
-   * @var string
-   */
-  public string $message;
-
-  public function __construct(int $statusCode, string $message) {
-    $this->statusCode = $statusCode;
-    $this->message = $message;
-  }
+  public function __construct(
+    public int $statusCode = -1,
+    public string $message = ''
+  ) {}
 }

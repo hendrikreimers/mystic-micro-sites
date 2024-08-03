@@ -5,17 +5,13 @@ namespace Models;
 
 class JwtTokensModel {
   /**
-   * @var string
+   * Constructor
+   *
+   * @param string $token
+   * @param string | null $refreshToken
    */
-  public string $token;
-
-  /**
-   * @var string|null
-   */
-  public ?string $refreshToken;
-
-  public function __construct(string $token, ?string $refreshToken) {
-    $this->token = $token;
-    $this->refreshToken = $refreshToken;
-  }
+  public function __construct(
+    public string $token = '',
+    public ?string $refreshToken = null
+  ) {}
 }

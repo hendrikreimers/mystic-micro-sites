@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:mms="http://www.w3.org/1999/html">
 <head>
   <meta charset="UTF-8">
   <meta name="robots" content="noindex, nofollow">
@@ -15,7 +15,7 @@
   <!-- It's difficult to pass a JSON string into an attribute, i was bored so i made a workaounrd by adding pipe calls -->
   <!-- pipe calls are calling an php function before inserting the variable. eachPipe attribute reverse it before using it -->
 </mms:comment>
-<mms:forEach each="{{ elements | base64_encode }}" let="element" index="myIndex" eachPipe="base64_decode">
+<mms:forEach each="{{ elements | base64_encode }}" let="element" index="myIndex" eachPipe="base64_decode" eachPipe2="htmlspecialchars_decode">
   <mms:if condition="'{{ element.type.value }}' == 'headline'">
     <h{{ element.element.layout }}>{{ element.element.value }}</h{{ element.element.layout }}>
   </mms:if>
@@ -30,6 +30,82 @@
       <a href="{{ element.element.href }}" target="_blank">{{ element.element.title }}</a>
     </div>
   </mms:if>
+  <mms:if condition="'{{ element.type.value }}' == 'vcard'">
+    <div class="vcard">
+      <div class="vcard__card">
+        <div class="icon">
+          <span class="icon-vcard"></span>
+        </div>
+        <div class="vcard__details">
+          <div class="details__companyName">
+            <strong>{{ element.element.companyName }}</strong>
+          </div>
+          <div class="details__firstName">
+            <strong>{{ element.element.firstName }} {{ element.element.lastName }}</strong>
+          </div>
+          <div class="details__address">
+            {{ element.element.address }}
+          </div>
+          <div class="details__phone">
+            <strong>Phone:</strong>&nbsp;<a class="link--simple" href="tel:{{ element.element.phone }}">{{ element.element.phone }}</a>
+          </div>
+          <div class="details__mobile">
+            <strong>Mobile:</strong>&nbsp;<a class="link--simple" href="tel:{{ element.element.mobile }}">{{ element.element.mobile }}</a>
+          </div>
+          <div class="details__email">
+            <a href="mailto:{{ element.element.email }}">{{ element.element.email }}</a>
+          </div>
+          <div class="details__website">
+            <a href="{{ element.element.website }}" target="_blank">{{ element.element.website }}</a>
+          </div>
+        </div>
+      </div>
+      <div class="vcard__download link">
+        <a href="#" onClick="return downloadVCard('{{ element.element }}');">Download VCard</a>
+      </div>
+    </div>
+  </mms:if>
 </mms:forEach>
+
+<mms:comment>
+  <!-- Functionality copied out from the Angular source to keep it simple -->
+</mms:comment>
+<script type="text/javascript">
+  function downloadVCard(data) {
+    data = JSON.parse(htmlDecode(data));
+
+    const vcardData = this.generateVCard(data);
+    const blob = new Blob([vcardData], { type: 'text/vcard' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${data.firstName}_${data.lastName}.vcf`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  function htmlDecode(input) {
+    // The fastest and best way is to use the browsers integrated functionality
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(input, 'text/html');
+    return doc.documentElement.textContent || '';
+  }
+
+  function generateVCard(data) {
+    return [
+      `BEGIN:VCARD`,
+      `VERSION:3.0`,
+      `FN:${data.firstName} ${data.lastName}`,
+      `ORG:${data.companyName}`,
+      `TEL;TYPE=WORK,VOICE:${data.phone}`,
+      `TEL;TYPE=CELL,VOICE:${data.mobile}`,
+      `ADR;TYPE=WORK,PREF:;;${data.address}`,
+      `EMAIL:${data.email}`,
+      `URL:${data.website}`,
+      `END:VCARD`
+    ].join("\n").trim();
+  }
+</script>
 </body>
 </html>

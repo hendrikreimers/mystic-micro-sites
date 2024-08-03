@@ -2,7 +2,6 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Button, ButtonDirective} from "primeng/button";
 import {Router, RouterLink} from "@angular/router";
 import {ButtonGroupModule} from "primeng/buttongroup";
-import {FontFamilies, SiteElementInterface, SiteElements, SiteElementsTypes} from "../../../Interfaces/SiteLayoutInterface";
 import {CommonModule} from "@angular/common";
 import {HeadlineFieldComponent} from "../../Elements/headline-field/headline-field.component";
 import {v6 as uuidv6} from 'uuid';
@@ -20,7 +19,18 @@ import {base64Decode, base64Encode, transformSiteElementType} from "../../../Uti
 import {SaveDialogComponent} from "../../Molecules/save-dialog/save-dialog.component";
 import {DialogEventDataInterface} from "../../../Interfaces/DialogDataInterface";
 import {GlobalContextStorageService} from "../../../Service/globalContextStorage.service";
-import {SiteElement, SiteElementHeadline, SiteElementImage, SiteElementLink, SiteElementText, SiteLayout} from "../../../Models/SiteLayoutModel";
+import {SiteLayout} from "../../../Models/SiteLayoutModel";
+import {SiteElementInterface} from "../../../Interfaces/SiteElementInterface";
+import {SiteElements} from "../../../Types/SiteElementsType";
+import {SiteElementsTypes} from "../../../Types/SiteElementsTypes";
+import {FontFamilies} from "../../../Types/FontFamilies";
+import {SiteElementLink} from "../../../Models/SiteElementLinkModel";
+import {SiteElementImage} from "../../../Models/SiteElementImageModel";
+import {SiteElementText} from "../../../Models/SiteElementTextModel";
+import {SiteElementHeadline} from "../../../Models/SiteElementHeadlineModel";
+import {SiteElement} from "../../../Models/SiteElementModel";
+import {SiteElementVcard} from "../../../Models/SiteElementVcardModel";
+import {VcardFieldComponent} from "../../Elements/vcard-field/vcard-field.component";
 
 /**
  * PAGE: New Site
@@ -43,7 +53,8 @@ import {SiteElement, SiteElementHeadline, SiteElementImage, SiteElementLink, Sit
     FormsModule,
     DropdownModule,
     SitePreviewComponent,
-    SaveDialogComponent
+    SaveDialogComponent,
+    VcardFieldComponent
   ],
   templateUrl: './new-site.component.html',
   styleUrl: './new-site.component.scss',
@@ -138,6 +149,22 @@ export class NewSiteComponent implements OnInit {
       const newType: SiteElement<SiteElementLink> = this.getNewElementBasicConfig<SiteElementLink>('link',  new SiteElementLink(
         ElementDefaultValues.linkTitle,
         ElementDefaultValues.linkHref
+      ))
+
+      this.siteLayout.elements.push(newType);
+    }
+
+    // ELEMENT: VCard
+    if ( elName === 'vcard' ) {
+      const newType: SiteElement<SiteElementVcard> = this.getNewElementBasicConfig<SiteElementVcard>('vcard',  new SiteElementVcard(
+        ElementDefaultValues.vcard.firstName,
+        ElementDefaultValues.vcard.lastName,
+        ElementDefaultValues.vcard.address,
+        ElementDefaultValues.vcard.email,
+        ElementDefaultValues.vcard.website,
+        ElementDefaultValues.vcard.phone,
+        ElementDefaultValues.vcard.mobile,
+        ElementDefaultValues.vcard.companyName
       ))
 
       this.siteLayout.elements.push(newType);

@@ -1,0 +1,16 @@
+
+.field__vcard {
+  .vcard__input {
+    @apply
+      flex
+      flex-row
+      justify-between
+      items-center
+      my-2;
+
+    label {
+      @apply
+        mr-2;
+    }
+  }
+}

@@ -5,7 +5,8 @@ import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {GeneralConfig} from "../../../Configs/GeneralConfig";
-import {SiteElementLink} from "../../../Models/SiteLayoutModel";
+
+import {SiteElementLink} from "../../../Models/SiteElementLinkModel";
 
 @Component({
   selector: 'link-field',

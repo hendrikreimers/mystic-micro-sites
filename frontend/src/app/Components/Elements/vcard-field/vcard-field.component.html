@@ -1,0 +1,41 @@
+<div class="field__vcard">
+  <div class="button-group">
+    <p-button [disabled]="areButtonsEnabled()" icon="pi pi-check" severity="success" (click)="onSaveValue($event)" />
+    <p-button [disabled]="areButtonsEnabled()" icon="pi pi-times" severity="warning" (click)="onCancelValue($event)"/>
+    <p-button icon="pi pi-trash" severity="danger" (click)="onElementRemove()" />
+  </div>
+  <div class="input-group">
+    <div class="vcard__input vcard__input--companyName">
+      <label for="companyName">Company name</label>
+      <input type="text" pInputText [(ngModel)]="companyName" id="companyName" />
+    </div>
+    <div class="vcard__input vcard__input--firstName">
+      <label for="firstName">First name</label>
+      <input type="text" pInputText [(ngModel)]="firstName" id="firstName" />
+    </div>
+    <div class="vcard__input vcard__input--lastName">
+      <label for="lastName">Last name</label>
+      <input type="text" pInputText [(ngModel)]="lastName" id="lastName" />
+    </div>
+    <div class="vcard__input vcard__input--address">
+      <label for="address">Address</label>
+      <input type="text" pInputText [(ngModel)]="address" id="address" />
+    </div>
+    <div class="vcard__input vcard__input--phone">
+      <label for="phone">Phone</label>
+      <input type="text" pInputText [(ngModel)]="phone" id="phone" />
+    </div>
+    <div class="vcard__input vcard__input--mobile">
+      <label for="mobile">Mobile</label>
+      <input type="text" pInputText [(ngModel)]="mobile" id="mobile" />
+    </div>
+    <div class="vcard__input vcard__input--email">
+      <label for="email">E-Mail</label>
+      <input type="text" pInputText [(ngModel)]="email" id="email" />
+    </div>
+    <div class="vcard__input vcard__input--website">
+      <label for="website">Website</label>
+      <input type="text" pInputText [(ngModel)]="website" id="website" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="vcard">
+  <div class="vcard__card">
+    <div class="icon">
+      <span class="icon-vcard"></span>
+    </div>
+    <div class="vcard__details">
+      <div class="details__lastName" *ngIf="elementConfig.element.companyName">
+        <strong>{{ elementConfig.element.companyName }}</strong>
+      </div>
+      <div class="details__firstName" *ngIf="elementConfig.element.firstName || elementConfig.element.lastName">
+        <strong>{{ elementConfig.element.firstName }} {{ elementConfig.element.lastName }}</strong>
+      </div>
+      <div class="details__address" *ngIf="elementConfig.element.address">
+        {{ elementConfig.element.address }}
+      </div>
+      <div class="details__phone" *ngIf="elementConfig.element.phone">
+        <strong>Phone:</strong>&nbsp;<a class="link--simple" href="tel:{{ elementConfig.element.phone }}">{{ elementConfig.element.phone }}</a>
+      </div>
+      <div class="details__mobile" *ngIf="elementConfig.element.mobile">
+        <strong>Mobile:</strong>&nbsp;<a class="link--simple" href="tel:{{ elementConfig.element.mobile }}">{{ elementConfig.element.mobile }}</a>
+      </div>
+      <div class="details__email" *ngIf="elementConfig.element.email">
+        <a href="mailto:{{ elementConfig.element.email }}">{{ elementConfig.element.email }}</a>
+      </div>
+      <div class="details__website" *ngIf="elementConfig.element.website">
+        <a href="{{ elementConfig.element.website }}" target="_blank">{{ elementConfig.element.website }}</a>
+      </div>
+    </div>
+  </div>
+  <div class="vcard__download link">
+    <a href="#" (click)="elementConfig.element.downloadVCard()">Download VCard</a>
+  </div>
+</div>

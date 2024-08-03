@@ -4,7 +4,8 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {Button} from "primeng/button";
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
-import {SiteElementText} from "../../../Models/SiteLayoutModel";
+
+import {SiteElementText} from "../../../Models/SiteElementTextModel";
 
 @Component({
   selector: 'text-field',

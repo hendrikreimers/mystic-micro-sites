@@ -95,7 +95,7 @@ class TemplateView {
       }
     }
 
-    return is_array($value) ? json_encode($value) : $this->handleValueEscape($value);
+    return is_array($value) ? htmlspecialchars(json_encode($value), ENT_QUOTES | ENT_HTML5, 'UTF-8') : $this->handleValueEscape($value);
   }
 
   /**

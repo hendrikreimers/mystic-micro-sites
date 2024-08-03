@@ -1,4 +1,4 @@
-import {FontFamilies} from "../Interfaces/SiteLayoutInterface";
+import {FontFamilies} from "../Types/FontFamilies";
 
 /**
  * Default values for the element field inputs
@@ -17,6 +17,17 @@ export const ElementDefaultValues = {
 
   linkTitle: 'Your link title',
   linkHref: '',
+
+  vcard: {
+    firstName: 'John',
+    lastName: 'Doe',
+    address: 'Unknown Street 123, Unknown City',
+    email: 'unknown@unknown.com',
+    website: 'https://google.com',
+    phone: '+441234567890',
+    mobile: '+441234567890',
+    companyName: 'The Unknown Company'
+  },
 
   imageData: 'data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABBAAD/4QMraHR0cDov' +
     'L25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4b' +

@@ -40,10 +40,17 @@ class ForEachViewHelper
     $items = $attributes['each'] ?? [];
     $variableName = $attributes['let'] ?? 'item';
     $variablePipe = $attributes['eachPipe'] ?? '';
+    $variablePipe2 = $attributes['eachPipe2'] ?? '';
     $indexName = $attributes['index'] ?? 'index';
 
     if ( $variablePipe ) {
       $items = $variablePipe($items);
+    }
+
+    if ( $variablePipe2 ) {
+      if ( $variablePipe2 === 'htmlspecialchars_decode' ) {
+        $items = htmlspecialchars_decode($items, ENT_QUOTES | ENT_HTML5);
+      } else $items = $variablePipe2($items);
     }
 
     // Decode JSON string if $items is a JSON-encoded string

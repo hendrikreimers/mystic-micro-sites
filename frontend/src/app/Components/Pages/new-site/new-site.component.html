@@ -7,6 +7,7 @@
         <p-button label="Text" (click)="addElement('text')" icon="pi pi-align-left" />
         <p-button label="Image" (click)="addElement('image')" icon="pi pi-image" />
         <p-button label="Link" (click)="addElement('link')" icon="pi pi-link" />
+        <p-button label="VCard" (click)="addElement('vcard')" icon="pi pi-id-card" />
       </p-buttonGroup>
       <p-button label="Save" class="saveBtn" severity="success" (click)="showSaveDialog = true" icon="pi pi-save" />
     </div>
@@ -52,6 +53,12 @@
           (elementRemove)="onElementRemove(elField.uid)" />
         <link-field
           *ngSwitchCase="'link'"
+          [elementConfig]="transformSiteElementType(elField)"
+          [uid]="elField.uid"
+          (elementChange)="onElementChange($event)"
+          (elementRemove)="onElementRemove(elField.uid)" />
+        <vcard-field
+          *ngSwitchCase="'vcard'"
           [elementConfig]="transformSiteElementType(elField)"
           [uid]="elField.uid"
           (elementChange)="onElementChange($event)"

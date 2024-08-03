@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {BasePreviewComponent} from "../../../Classes/BasePreviewComponent";
-import {SiteElementLink} from "../../../Models/SiteLayoutModel";
+import {SiteElementLink} from "../../../Models/SiteElementLinkModel";
 
 @Component({
   selector: 'link-preview',
