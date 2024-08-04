@@ -39,7 +39,7 @@ if ( (!$fileId || !$keyParts) ) {
 }
 
 // Create a timestamp for access limitation
-$timestamp = time() + 10; // Current timestamp plus 10 seconds
+$timestamp = time() + VIEW_TIMELIMIT; // Current timestamp plus 10 seconds
 
 // Hash it, so we will recognize any modification
 $hash = StringUtlity::hashString(implode('', [
