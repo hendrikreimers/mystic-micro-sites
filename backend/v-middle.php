@@ -37,26 +37,7 @@ if ( $p === null ) {
 
 $finalUrl = "/show/$p";
 
+header("Location: $finalUrl", true, 303); // 303 See Other
+exit();
+
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Redirecting...</title>
-  <meta charset="UTF-8">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="pragma" content="no-cache">
-  <meta http-equiv="expires" content="0">
-  <script>
-    // Change URL and redirect
-    window.onload = function() {
-      window.history.replaceState(null, null, '<?= $finalUrl ?>');
-      window.location.href = '<?= $finalUrl ?>';
-    };
-  </script>
-</head>
-<body style="background-color: #000; color: #fff;">
-<p>Redirecting...</p>
-</body>
-</html>

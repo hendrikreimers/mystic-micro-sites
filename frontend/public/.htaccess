@@ -15,7 +15,8 @@ RemoveHandler .var
     RewriteRule \.(enc|h|sh|key)$ - [F,L]
 
     # Rewrite to view
-    RewriteRule ^view/([^/]+)/([^/]+)$ /view.php?id=$2&key=$1 [QSA,L]
+    #RewriteRule ^view/([^/]+)/([^/]+)$ /view.php?id=$2&key=$1 [QSA,L]
+    RewriteRule ^view/$ /view.php [QSA,L]
     RewriteRule ^m/([^/]+)$ /v-middle.php?p=$1 [QSA,L]
     RewriteRule ^show/([^/]+)$ /v-show.php?p=$1 [QSA,L]
 </IfModule>

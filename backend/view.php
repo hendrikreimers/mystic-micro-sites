@@ -29,34 +29,86 @@ $response = new ResponseHelper(); // ResponseHelper
 // Initialize rate limiter
 $rateLimit = new RateLimitHelper($response, $request); // Initialize rate limiter
 
-// Get URL query parameters
-$fileId = $request->get('id');
-$keyParts = $request->get('key');
+if ($request->getMethod() === 'POST') {
+  // Get URL query parameters
+  $fileId = $request->get('id');
+  $keyParts = $request->get('key');
 
-// Simple Check
-if ( (!$fileId || !$keyParts) ) {
-  die("Missing arguments");
+  // Simple Check
+  if ((!$fileId || !$keyParts)) {
+    die("Missing arguments");
+  }
+
+  // Create a timestamp for access limitation
+  $timestamp = time() + VIEW_TIMELIMIT; // Current timestamp plus 10 seconds
+
+  // Hash it, so we will recognize any modification
+  $hash = StringUtility::hashString(implode('', [
+    $fileId,
+    $keyParts,
+    $timestamp,
+    $request->getClientIp(),
+    $request->headers->get('User-Agent')
+  ]), SECRET_KEY);
+
+  // Build the data for the URL query param
+  $params = json_encode([$fileId, $keyParts, $timestamp, $hash]);
+
+  // Transform data appending hash
+  $params = urlencode(rawurlencode(EnigmaBase64Service::enigmaBase64Encode($params)));
+
+  // Build URL and start redirect
+  $middleUrl = "/m/$params";
+
+  // Return the URL for the next step instead of redirecting
+  echo json_encode(['redirectUrl' => $middleUrl]);
+  exit();
 }
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Processing...</title>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <script>
+    window.onload = function () {
+      // Extract the hash part of the URL
+      var hash = window.location.hash.slice(1).split('/'); // Remove the "#" from the beginning
 
-// Create a timestamp for access limitation
-$timestamp = time() + VIEW_TIMELIMIT; // Current timestamp plus 10 seconds
+      // Create an object from the hash parameters
+      var params = new URLSearchParams('id=' + hash[1] + '&key=' + hash[0]);
+      var fileId = params.get('id');
+      var keyParts = params.get('key');
 
-// Hash it, so we will recognize any modification
-$hash = StringUtility::hashString(implode('', [
-  $fileId,
-  $keyParts,
-  $timestamp,
-  $request->getClientIp(),
-  $request->headers->get('User-Agent')
-]), SECRET_KEY);
+      // Send the data to the server via POST
+      if (fileId && keyParts) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", window.location.pathname, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-// Build the data for the URL query param
-$params = json_encode([$fileId, $keyParts, $timestamp, $hash]);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            // Parse the response JSON
+            var response = JSON.parse(xhr.responseText);
 
-// Transform data appending hash
-$params = urlencode(rawurlencode(EnigmaBase64Service::enigmaBase64Encode($params)));
+            // Leitet weiter zu der URL, die der Server zurückgegeben hat
+            window.location.replace( response.redirectUrl);
+          }
+        };
 
-// Build URL and start redirect
-$middleUrl = "/m/$params";
-header("Location: $middleUrl", true, 303); // 303 See Other
-exit();
+        xhr.send("id=" + encodeURIComponent(fileId) + "&key=" + encodeURIComponent(keyParts));
+      } else {
+        window.location.replace('/404');
+      }
+    };
+  </script>
+</head>
+<body>
+<p>Process data...</p>
+</body>
+</html>

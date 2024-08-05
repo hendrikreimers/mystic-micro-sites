@@ -86,7 +86,7 @@ export class NewSiteSaveComponent implements OnInit {
       next: ( response: {url: string} ): void => {
         this.globalStorageService.setStorageValue('saveSite', null);
         result = true;
-        this.resultUrl = response.url;
+        this.resultUrl = response.url.replace('/view/', '/view/#'); // REPLACE Workaround due issues on sending hashtag via backend
       },
       error: (err): void => {
         this.errorMsg = err.error.message;

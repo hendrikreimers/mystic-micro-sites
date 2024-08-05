@@ -31,3 +31,7 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(realpath(dirname(__FILE__)));
 $dotenv->safeLoad();
 
+// Set noch cache header
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+header("Pragma: no-cache"); // HTTP 1.0
+header("Expires: 0"); // Proxies
