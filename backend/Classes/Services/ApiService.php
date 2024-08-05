@@ -6,7 +6,7 @@ namespace Services;
 use Helpers\CsrfTokenHelper;
 use Helpers\JwtHelper;
 use Helpers\ResponseHelper;
-use Utility\StringUtlity;
+use Utility\StringUtility;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -97,7 +97,7 @@ class ApiService {
     // Try to call the method based on action name or fall back to not found endpoint method.
     // Disallow direct caller names (like endpoint_...)
     if (
-      !StringUtlity::validateActionName($name) || // Wrong action name
+      !StringUtility::validateActionName($name) || // Wrong action name
       strstr($name, 'endpoint_') || // Try to access them directly
       $name === '404' || // Direct call Not found
       $name === 'not_found' || // Direct call not found
@@ -148,11 +148,11 @@ class ApiService {
     $postData = json_decode($this->request->getContent(), true);
 
     // Initialize username and password
-    $username = StringUtlity::escapeString(($postData['username'] ?? ''), true);
+    $username = StringUtility::escapeString(($postData['username'] ?? ''), true);
     $password = trim(strip_tags($postData['password'] ?? ''));
 
     // Security regular expression (simple regexp to take care that there are only allowed characters in user and pass)
-    if ( !StringUtlity::validateString($username) && !StringUtlity::validateString($password) ) {
+    if ( !StringUtility::validateString($username) && !StringUtility::validateString($password) ) {
       $username = '';
       $password = '';
     }

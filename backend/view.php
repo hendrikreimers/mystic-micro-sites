@@ -17,7 +17,7 @@ use Helpers\RateLimitHelper;
 use Helpers\ResponseHelper;
 use Services\EnigmaBase64Service;
 use Symfony\Component\HttpFoundation\Request;
-use Utility\StringUtlity;
+use Utility\StringUtility;
 
 // Global Environment Constants declaration
 EnvConstantsHelper::defineEnvConstants();
@@ -42,7 +42,7 @@ if ( (!$fileId || !$keyParts) ) {
 $timestamp = time() + VIEW_TIMELIMIT; // Current timestamp plus 10 seconds
 
 // Hash it, so we will recognize any modification
-$hash = StringUtlity::hashString(implode('', [
+$hash = StringUtility::hashString(implode('', [
   $fileId,
   $keyParts,
   $timestamp,

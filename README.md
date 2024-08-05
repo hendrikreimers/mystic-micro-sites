@@ -42,7 +42,7 @@ Mystic Micro Sites is a secure and efficient platform for creating mini-websites
 - **Master Password Recovery**: Allows site recovery using a master password stored on the server.
 - **NFC Tag Integration**: Enables NFC tags to link physical objects to digital content, providing an interactive way to access site details.
 - **Modular Codebase**: Designed for easy extension and customization, making it suitable for various development needs.
-- **Custom Template Engine**: Small high functional Template Engine for dynamic contet rendering, build from scratch.
+- **Custom Template Engine**: Small high functional Template Engine for dynamic content rendering, build from scratch with own HTML DOM Parser. Of course, it's not so efficient like Symfony's Crawler, but it was for personal educational purpose.
 - **QR Codes:**: Generates QR Codes as downloadable Image of the generated Mystic URL.
 
 ## Use cases

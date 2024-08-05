@@ -12,7 +12,7 @@ use Helpers\RateLimitHelper;
 use Helpers\ResponseHelper;
 use Services\ApiService;
 use Symfony\Component\HttpFoundation\Request;
-use Utility\StringUtlity;
+use Utility\StringUtility;
 
 // Global Environment Constants declaration
 EnvConstantsHelper::defineEnvConstants();
@@ -32,5 +32,5 @@ $apiService->sendApiHeader();
 $rateLimit = new RateLimitHelper($response, $request); // Initialize rate limiter
 
 // Get the requested action and call the requested API Endpoint (Magic call)
-$actionName = StringUtlity::escapeString($request->query->get('action', ''), true);
+$actionName = StringUtility::escapeString($request->query->get('action', ''), true);
 $apiService->{$actionName}(); // Magic call the endpoint based on action name

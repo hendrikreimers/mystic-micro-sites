@@ -31,7 +31,8 @@ $rateLimit = new RateLimitHelper($response, $request); // Initialize rate limite
 $p = urlencode(rawurlencode($request->get('p')));
 if ( $p === null ) {
   http_response_code(404);
-  exit("Page not found");
+  header("Location: /404");
+  exit();
 }
 
 $finalUrl = "/show/$p";
@@ -40,13 +41,13 @@ $finalUrl = "/show/$p";
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Zwischenschritt Seite</title>
+  <title>Redirecting...</title>
   <meta charset="UTF-8">
   <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
   <script>
     // Change URL and redirect
     window.onload = function() {
@@ -55,7 +56,7 @@ $finalUrl = "/show/$p";
     };
   </script>
 </head>
-<body>
+<body style="background-color: #000; color: #fff;">
 <p>Redirecting...</p>
 </body>
 </html>

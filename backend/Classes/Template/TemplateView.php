@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Template;
 
-use Utility\StringUtlity;
+use Utility\StringUtility;
 
 /**
  * Template Engine View
@@ -131,7 +131,7 @@ class TemplateView {
    */
   private function handleValueEscape(mixed $value): mixed {
     if ( is_string($value) ) {
-      $value = StringUtlity::escapeString($value, false, $this->escapeString, $this->stripTags);
+      $value = StringUtility::escapeString($value, false, $this->escapeString, $this->stripTags);
 
       // Fix for double escaped
       $expr = '/&amp;(amp|lt|gt|quot|#\d+;)/m';

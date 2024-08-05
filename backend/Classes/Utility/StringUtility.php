@@ -9,7 +9,7 @@ namespace Utility;
  * Helper functions for string handling and validation
  *
  */
-class StringUtlity {
+class StringUtility {
 
   /**
    * Escapes a string

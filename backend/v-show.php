@@ -23,7 +23,7 @@ use Services\FileService;
 use Symfony\Component\HttpFoundation\Request;
 use Template\TemplateEngine;
 use Utility\ObjectUtility;
-use Utility\StringUtlity;
+use Utility\StringUtility;
 
 // Global Environment Constants declaration
 EnvConstantsHelper::defineEnvConstants();
@@ -46,7 +46,7 @@ if ( !$params ) {
 [$fileId, $keyParts, $timestamp, $hashSend] = json_decode(EnigmaBase64Service::enigmaBase64Decode($params));
 
 // Create a comparison hash
-$hashLocal = StringUtlity::hashString(implode('', [
+$hashLocal = StringUtility::hashString(implode('', [
   $fileId,
   $keyParts,
   $timestamp,
