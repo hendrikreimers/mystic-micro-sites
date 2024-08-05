@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Template\ViewHelper;
 
-use Template\TemplateView;
+use Models\DOM\DOMNode;
 
 /**
  * Class ForEachViewHelper
@@ -12,15 +12,17 @@ use Template\TemplateView;
  * This class provides functionality to iterate over a collection of items and render
  * a template block for each item, substituting placeholders with item-specific values.
  */
-class ForEachViewHelper
-{
+class ForEachViewHelper extends BaseViewHelper implements ViewHelperInterface {
   /**
-   * @var TemplateView
+   * Registers allowed and required Arguments for this ViewHelper
    *
-   * The TemplateView instance that allows access to assigned variables
-   * within the template.
+   * @return void
    */
-  public TemplateView $view;
+  public function registerArguments(): void {
+    $this->registerArgument('each', true, 'JSON String of traversable array', true, true);
+    $this->registerArgument('as', true, 'Current item of loop');
+    $this->registerArgument('index', false, 'Current index of iteration');
+  }
 
   /**
    * Renders the content block for each item in a collection.
@@ -29,40 +31,14 @@ class ForEachViewHelper
    * as well as the variable names for the current item and its index. It replaces
    * placeholders in the content block with these values for each item.
    *
-   * @param array $attributes An associative array containing 'each', 'let', and 'index' keys.
-   * @param string $content The content template to be rendered for each item.
    * @return string The concatenated output of the rendered content for each item.
    * @throws \Exception If the 'each' attribute is not a valid array or iterable.
    */
-  public function render(array $attributes, string $content): string
-  {
+  public function render(): string {
     $output = '';
-    $items = $attributes['each'] ?? [];
-    $variableName = $attributes['let'] ?? 'item';
-    $variablePipe = $attributes['eachPipe'] ?? '';
-    $variablePipe2 = $attributes['eachPipe2'] ?? '';
-    $indexName = $attributes['index'] ?? 'index';
-
-    if ( $variablePipe ) {
-      $items = $variablePipe($items);
-    }
-
-    if ( $variablePipe2 ) {
-      if ( $variablePipe2 === 'htmlspecialchars_decode' ) {
-        $items = htmlspecialchars_decode($items, ENT_QUOTES | ENT_HTML5);
-      } else $items = $variablePipe2($items);
-    }
-
-    // Decode JSON string if $items is a JSON-encoded string
-    if (is_string($items)) {
-      $decodedItems = json_decode($items, true);
-
-      if (json_last_error() === JSON_ERROR_NONE) {
-        $items = $decodedItems;
-      } else {
-        $items = $this->parseItems($items);
-      }
-    }
+    $items = $this->getArgumentValue('each');
+    $variableName = $this->getArgumentValue('as');
+    $indexName = $this->getArgumentValue('index') ?? 'index';
 
     // Check if items are iterable
     if (!is_iterable($items)) {
@@ -71,38 +47,15 @@ class ForEachViewHelper
 
     foreach ($items as $index => $item) {
       // Temporarily assign variables to the view
-      $this->view->assign($variableName, $item);
-      $this->view->assign($indexName, $index);
+      $this->engine->view->assign($variableName, $item);
+      $this->engine->view->assign($indexName, $index);
 
-      // Render content using the view to replace placeholders
-      $renderedContent = $this->view->renderContent($content);
+      $output .= $this->renderChildren();
 
-      // Append rendered content to the output
-      $output .= $renderedContent;
+      $this->engine->view->assign($variableName, '');
+      $this->engine->view->assign($indexName, '');
     }
 
     return $output;
-  }
-
-  /**
-   * Parses a string representation of an array and returns an array of items.
-   *
-   * This method takes a string formatted as a list of values enclosed in square brackets,
-   * e.g., "['a','b','c']", and converts it into a PHP array. The method handles both single
-   * and double quotes around the items and trims any extra spaces.
-   *
-   * @param string $itemsString The string representation of an array.
-   * @return array The parsed array of items.
-   */
-  private function parseItems(string $itemsString): array
-  {
-    // Remove square brackets from the beginning and end of the string
-    $trimmed = trim($itemsString, "[]");
-
-    // Split the string into individual items using commas as delimiters, accounting for possible spaces
-    $parts = preg_split("/\s*,\s*/", $trimmed);
-
-    // Trim surrounding quotes (single or double) from each item and return the resulting array
-    return array_map(fn($item) => trim($item, "'\""), $parts);
   }
 }

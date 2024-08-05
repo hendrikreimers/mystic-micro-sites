@@ -5,19 +5,25 @@
   <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>MysticMicroSite</title>
   <link rel="stylesheet" href="{{ baseUrl }}/microsite.css">
 </head>
 <body id="body" class="font-family__{{ fontFamily }}" style="background-color: {{ bgColor }}; color: {{ textColor }}">
+<script>bla</script>
 <mms:comment>
-  <!-- It's difficult to pass a JSON string into an attribute, i was bored so i made a workaounrd by adding pipe calls -->
-  <!-- pipe calls are calling an php function before inserting the variable. eachPipe attribute reverse it before using it -->
+  <!-- It's difficult to pass a JSON string into an attribute, i was bored so i made a workaounrd by adding pipe calls
+  pipe calls are calling an php function before inserting the variable. eachPipe attribute reverse it before using it -->
 </mms:comment>
-<mms:forEach each="{{ elements | base64_encode }}" let="element" index="myIndex" eachPipe="base64_decode" eachPipe2="htmlspecialchars_decode">
+<mms:forEach each="{{ elements }}" as="element" index="myIndex">
   <mms:if condition="'{{ element.type.value }}' == 'headline'">
-    <h{{ element.element.layout }}>{{ element.element.value }}</h{{ element.element.layout }}>
+    <mms:if condition="'{{ element.element.layout }}' == '1'"><h1>{{ element.element.value }}</h1></mms:if>
+    <mms:if condition="'{{ element.element.layout }}' == '2'"><h2>{{ element.element.value }}</h2></mms:if>
+    <mms:if condition="'{{ element.element.layout }}' == '3'"><h3>{{ element.element.value }}</h3></mms:if>
+    <mms:if condition="'{{ element.element.layout }}' == '4'"><h4>{{ element.element.value }}</h4></mms:if>
+    <mms:if condition="'{{ element.element.layout }}' == '5'"><h5>{{ element.element.value }}</h5></mms:if>
+    <mms:if condition="'{{ element.element.layout }}' == '6'"><h6>{{ element.element.value }}</h6></mms:if>
   </mms:if>
   <mms:if condition="'{{ element.type.value }}' == 'text'">
     <p>{{ element.element.value }}</p>

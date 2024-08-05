@@ -1,21 +1,18 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Template;
 
-/**
- * Class TemplateEngine
- *
- * A class responsible for rendering templates with dynamic content
- * using a simple syntax for variable replacement and tag processing.
- */
-class TemplateEngine
-{
+use Enums\DOM\NodeTypesEnum;
+use Models\DOM\NodeList;
+use Parser\HTMLParser;
+use Models\DOM\DOMNode;
+
+class TemplateEngine {
   /**
-   * @var string The content of the template file.
+   * @var HTMLParser The content of the template file.
    */
-  private string $template;
+  private HTMLParser $domTemplate;
 
   /**
    * @var TemplateView An instance of the TemplateView class for managing template variables.
@@ -25,14 +22,18 @@ class TemplateEngine
   /**
    * TemplateEngine constructor.
    *
-   * Initializes the template engine with a given template file path.
+   * Initializes the template engine with a given HTML DOM.
    *
-   * @param string $templateFilePath The file path to the template.
+   * @param string|null $templateFilePath The file path to the template.
+   * @throws \Exception
    */
-  public function __construct(string $templateFilePath)
-  {
+  public function __construct(?string $templateFilePath = null) {
     // Load the template file content
-    $this->template = file_get_contents($templateFilePath);
+    $this->domTemplate = new HTMLParser();
+
+    if ( $templateFilePath )
+      $this->domTemplate->parseHTML(file_get_contents($templateFilePath));
+
     // Initialize a new TemplateView instance
     $this->view = new TemplateView();
   }
@@ -42,12 +43,165 @@ class TemplateEngine
    *
    * @return string The rendered template as a string.
    */
-  public function render(): string
-  {
-    // Replace variables in the template with actual values
-    $parsedTemplate = $this->replaceVariables($this->template);
-    // Parse custom tags and return the final HTML
-    return $this->parse($parsedTemplate);
+  public function render(): string {
+    $this->domTemplate->dom->childNodes = $this->parseNodes($this->domTemplate->dom->childNodes);
+    $this->domTemplate->dom->childNodes = $this->renderViewHelperNodes($this->domTemplate->dom->childNodes);
+    return $this->domTemplate->saveHTML();
+  }
+
+  /**
+   * Instead of a parsed HTML Template you can set a fragment of it.
+   * Useful on parsing viewHelpers children.
+   *
+   * @param NodeList $nodeList
+   * @return void
+   */
+  public function setFragment(NodeList $nodeList): void {
+    $this->domTemplate->dom = new DOMNode(NodeTypesEnum::DOCUMENT, 'document', childNodes: $nodeList);
+  }
+
+  /**
+   * Lookups for all MysticMicroSite (mms) ViewHelpers and renders them recursively
+   *
+   * @param NodeList $nodeList
+   * @return NodeList
+   * @throws \Exception
+   */
+  private function renderViewHelperNodes(NodeList $nodeList): NodeList {
+    if ( $nodeList->count() > 0 ) {
+      while ($nodeList->valid()) {
+        // Get current node
+        $currentNode = $nodeList->current();
+
+        // Check if it is a ViewHelper
+        if ( $currentNode->namespace === 'mms' ) {
+          $nodeName = $currentNode->nodeName;
+          $nodeList->replaceByIndex($nodeList->key(), $this->processViewHelper($nodeName, $currentNode));
+        }
+
+        // Change child nodes
+        if ($currentNode->childNodes->count() > 0) {
+          $currentNode->childNodes = $this->renderViewHelperNodes($currentNode->childNodes);
+        }
+
+        // Set pointer to next
+        $nodeList->next();
+      }
+
+      // Don't forget to rewind the position marker
+      $nodeList->rewind();
+    }
+
+    return $nodeList;
+  }
+
+  /**
+   * Processes a ViewHelper
+   *
+   * This method creates an instance of the viewhelper and initializes it,
+   * then content will be rendered as HTML String and pushed back to the DOM.
+   *
+   * @param string $viewHelperName
+   * @param $currentNode
+   * @return DOMNode
+   * @throws \Exception
+   */
+  private function processViewHelper(string $viewHelperName, $currentNode): DOMNode {
+    $className = '\\Template\\ViewHelper\\' . ucfirst($viewHelperName) . 'ViewHelper';
+
+    // Check if the specified class exists
+    if (!class_exists($className)) {
+      throw new \Exception("ViewHelper Class \"$className\" not found");
+    }
+
+    // Check if the specified class implements interface
+    if ( in_array('ViewHelperInterface', class_implements($className)) ) {
+      throw new \Exception("ViewHelper Class \"$className\" not implements ViewHelperInterface");
+    }
+
+    // Reference attributes
+    $attributes = &$currentNode->attributes;
+
+    // Instantiate the view helper class
+    $instance = new $className($currentNode, $this);
+
+    // Initialize arguments
+    if (method_exists($instance, 'registerArguments')) {
+      $instance->registerArguments();
+    }
+
+    // Initialize the ViewHelper
+    $instance->initialize($attributes, $className); // Checks if registered arguments are set and sets the value
+
+    // Ensure the class has a render method
+    if (!method_exists($instance, 'render')) {
+      throw new \Exception("Class $className does not have a render method");
+    }
+
+    // Render the Node
+    $renderedContent = $instance->render();
+
+    return new DOMNode(NodeTypesEnum::TEXT_NODE, 'text', $renderedContent);
+  }
+
+  /**
+   * Parses each Node for variables in attribute values and text node values
+   *
+   * @param NodeList $nodeList
+   * @return void
+   */
+  private function parseNodes(NodeList $nodeList): NodeList {
+    if ( $nodeList->count() > 0 ) {
+      while ( $nodeList->valid() ) {
+        // Initialize the next round
+        $currentNode = $nodeList->current();
+        $nodeHasChanged = false;
+
+        // Change text content
+        if (trim($currentNode->nodeValue) !== '') {
+          $currentNode->nodeValue = $this->replaceVariables($currentNode->nodeValue);
+          $nodeHasChanged = true;
+        }
+
+        // Push variables to attributes
+        if ( $currentNode->attributes ) {
+          $this->parseNodeAttributes($currentNode);
+        }
+
+        // Change child nodes
+        if ($currentNode->childNodes->count() > 0) {
+          $currentNode->childNodes = $this->parseNodes($currentNode->childNodes);
+          $nodeHasChanged = true;
+        }
+
+        // Replace if something has changed
+        if ( $nodeHasChanged ) {
+          $nodeList->replaceByIndex($nodeList->key(), $currentNode);
+        }
+
+        // Set pointer to next
+        $nodeList->next();
+      }
+
+      // Don't forget to rewind the position marker
+      $nodeList->rewind();
+    }
+
+    return $nodeList;
+  }
+
+  /**
+   * Replaces Variables in Attributes of the given DOMNode reference
+   *
+   * @param DOMNode $node
+   * @return void
+   */
+  private function parseNodeAttributes(DOMNode &$node): void {
+    if ( $node->attributes && count($node->attributes) > 0 ) {
+      for ( $i = 0; $i < count($node->attributes); $i++ ) {
+        $node->attributes[$i]->attributeValue = $this->replaceVariables($node->attributes[$i]->attributeValue);
+      }
+    }
   }
 
   /**
@@ -56,8 +210,7 @@ class TemplateEngine
    * @param string $html The template content to process.
    * @return string The template with variables replaced.
    */
-  private function replaceVariables(string $html): string
-  {
+  private function replaceVariables(string $html): string {
     // Use regex to find all {{ variable }} patterns
     return preg_replace_callback('/{{\s*([\w.\[\d\]]+)\s*([|]{0,}\s*)([\w.]{0,})(\s*)?}}/', function ($matches) {
       // Extract the variable name and optional function pipe
@@ -81,108 +234,9 @@ class TemplateEngine
    * @param string $string The string to check.
    * @return bool True if the string is valid JSON, false otherwise.
    */
-  private function isJson(string $string): bool
-  {
+  private function isJson(string $string): bool {
     // Decode the string and check for JSON errors
     json_decode($string);
     return (json_last_error() === JSON_ERROR_NONE);
-  }
-
-  /**
-   * Parse custom tags within the template.
-   *
-   * @param string $html The template content to process.
-   * @return string The HTML content with custom tags processed.
-   */
-  private function parse(string $html): string
-  {
-    // Define a regex pattern to match <mms:...> tags
-    $pattern = '/<mms:([\w]+)([^>]*)>(.*?)<\/mms:\1>/s';
-
-    // Process each tag iteratively, starting with the outermost
-    while (preg_match($pattern, $html, $matches)) {
-      // Process the matched tag and get the rendered content
-      $renderedContent = trim($this->processTag($matches));
-
-      // Replace the matched tag with its rendered content
-      $html = str_replace($matches[0], $renderedContent, $html);
-    }
-
-    return $html;
-  }
-
-  /**
-   * Process an individual custom tag.
-   *
-   * @param array $matches An array of matches from the regex pattern.
-   * @return string The processed content for the tag.
-   * @throws \Exception If the class or render method does not exist.
-   */
-  private function processTag(array $matches): string
-  {
-    // Extract matches for class name, attributes, and inner content
-    [$fullMatch, $className, $attributesString, $innerContent] = $matches;
-
-    // Convert the attributes string to an associative array
-    $attributes = $this->parseAttributes($attributesString);
-
-    // Create a fully qualified class name for the view helper
-    $className = '\\Template\\ViewHelper\\' . ucfirst($className) . 'ViewHelper';
-
-    // Check if the specified class exists
-    if (!class_exists($className)) {
-      throw new \Exception("Class $className not found");
-    }
-
-    // Instantiate the view helper class
-    $instance = new $className();
-
-    // Ensure the class has a render method
-    if (!method_exists($instance, 'render')) {
-      throw new \Exception("Class $className does not have a render method");
-    }
-
-    // Pass the TemplateView instance to the view helper if it has a 'view' property
-    if (property_exists($instance, 'view')) {
-      $instance->view = $this->view;
-    }
-
-    // Render the tag using the attributes and inner content
-    return $instance->render($attributes, trim($innerContent));
-  }
-
-  /**
-   * Parse the attributes string into an associative array.
-   *
-   * @param string $attributesString The raw string of attributes.
-   * @return array An associative array of attribute names and values.
-   */
-  private function parseAttributes(string $attributesString): array
-  {
-    $attributes = [];
-    // Regex pattern to match attribute key-value pairs
-    $pattern = '/([\w\-]+)="([^"]*)"/';
-
-    // Find all attribute matches
-    preg_match_all($pattern, $attributesString, $matches, PREG_SET_ORDER);
-
-    // Process each attribute match
-    foreach ($matches as $match) {
-      // Replace variables within attribute values
-      $value = preg_replace_callback('/{{\s*([\w.\[\d\]]+)\s*([|]{0,}\s*)([\w.]{0,})(\s*)?}}/', function ($varMatch) {
-        // Resolve the variable name to its value
-        $resolvedValue = $this->view->getNested($varMatch[1]);
-        return $resolvedValue !== null ? $resolvedValue : $varMatch[0];
-      }, $match[2]);
-
-      // Decode the value if it is a JSON string
-      if ($this->isJson($value)) {
-        $value = json_decode($value, true);
-      }
-
-      // Store the attribute and its value
-      $attributes[$match[1]] = $value;
-    }
-    return $attributes;
   }
 }

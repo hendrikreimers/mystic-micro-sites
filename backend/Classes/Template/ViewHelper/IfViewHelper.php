@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Template\ViewHelper;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use Template\TemplateView;
 
 /**
  * Class IfViewHelper
@@ -13,26 +12,14 @@ use Template\TemplateView;
  * This class provides functionality to evaluate conditions using the Symfony Expression Language
  * and render a template block based on the evaluation result.
  */
-class IfViewHelper
-{
+class IfViewHelper extends BaseViewHelper implements ViewHelperInterface {
   /**
-   * @var TemplateView
+   * Registers allowed and required Arguments for this ViewHelper
    *
-   * The TemplateView instance that allows access to assigned variables
-   * within the template.
+   * @return void
    */
-  public TemplateView $view;
-
-  /**
-   * @var ExpressionLanguage
-   *
-   * The ExpressionLanguage instance to evaluate expressions.
-   */
-  private ExpressionLanguage $expressionLanguage;
-
-  public function __construct()
-  {
-    $this->expressionLanguage = new ExpressionLanguage();
+  public function registerArguments(): void {
+    $this->registerArgument('condition', true, 'Symfony Expression Language condition', true);
   }
 
   /**
@@ -41,30 +28,20 @@ class IfViewHelper
    * The method evaluates the given condition and renders the content block only if
    * the condition is true.
    *
-   * @param array $attributes An associative array containing the 'condition' key.
-   * @param string $content The content template to be rendered if the condition is true.
    * @return string The rendered content if the condition is true, otherwise an empty string.
-   * @throws \Exception If the condition expression is invalid.
    */
-  public function render(array $attributes, string $content): string
-  {
-    $condition = $attributes['condition'] ?? null;
+  public function render(): string {
+    $expressionLanguage = new ExpressionLanguage();
 
-    if ($condition === null) {
-      throw new \Exception("The 'condition' attribute is required.");
-    }
+    $condition = $this->getArgumentValue('condition');
 
     // Get all variables from the view
-    $variables = $this->view->getAll();
+    $variables = $this->engine->view->getAll();
 
     // Evaluate the condition using Symfony Expression Language
-    $result = $this->expressionLanguage->evaluate($condition, $variables);
+    $result = $expressionLanguage->evaluate($condition, $variables);
 
     // Render content only if the condition evaluates to true
-    if ($result) {
-      return $this->view->renderContent($content);
-    }
-
-    return '';
+    return ( $result ) ? $this->renderChildren() : '';
   }
 }
