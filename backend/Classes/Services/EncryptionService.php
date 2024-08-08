@@ -4,7 +4,12 @@ declare(strict_types=1);
 namespace Services;
 
 use Exception;
+use phpseclib3\Crypt\AES;
 use Random\RandomException;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\Crypt\PublicKeyLoader;
+use phpseclib3\Crypt\Hash;
+use phpseclib3\Exception\NoKeyLoadedException;
 
 /**
  * Encryption Service Class
@@ -70,7 +75,10 @@ class EncryptionService {
       ),
 
       'privateKeyFile' => defined('PRIVATE_KEY_FILE') ? PRIVATE_KEY_FILE : 'data/keys/private.key',
-      'publicKeyFile' => defined('PUBLIC_KEY_FILE') ? PUBLIC_KEY_FILE : 'data/keys/public.key'
+      'publicKeyFile' => defined('PUBLIC_KEY_FILE') ? PUBLIC_KEY_FILE : 'data/keys/public.key',
+
+      'jwtPrivateKeyFile' => defined('JWT_PRIVATE_KEY_PATH') ? JWT_PRIVATE_KEY_PATH : 'data/keys/jwt_private.key',
+      'jwtPublicKeyFile' => defined('JWT_PUBLIC_KEY_PATH') ? JWT_PUBLIC_KEY_PATH : 'data/keys/jwt_public.key'
     );
 
     $mergedConfig = array_merge($defaultConfig, $configOverrides);
@@ -105,6 +113,34 @@ class EncryptionService {
     }
 
     return file_get_contents($this->config->publicKeyFile);
+  }
+
+  /**
+   * Returns the JWT Private Key
+   *
+   * @return string
+   * @throws Exception
+   */
+  public function getJwtPrivateKey(): string {
+    if ( !file_exists($this->config->jwtPrivateKeyFile) ) {
+      throw new \Exception('JWT private key file does not exist');
+    }
+
+    return file_get_contents($this->config->jwtPrivateKeyFile);
+  }
+
+  /**
+   * Returns the JWT Public Key
+   *
+   * @return string
+   * @throws Exception
+   */
+  public function getJwtPublicKey(): string {
+    if ( !file_exists($this->config->jwtPublicKeyFile) ) {
+      throw new \Exception('JWT public key file does not exist');
+    }
+
+    return file_get_contents($this->config->jwtPublicKeyFile);
   }
 
   /**
@@ -219,6 +255,57 @@ class EncryptionService {
     }
 
     return $decryptedData;
+  }
+
+  /**
+   * Decrypts the given "Web Crypto API" (JWT Public Key) encrypted data using the provided private key
+   *
+   * Hint:
+   * It uses phpseclib, because in Combination with the Web Crypto API it's not possible to decrypt with SHA-512
+   * using native PHP functions.
+   *
+   * @param string $encryptedBody The base64 encoded encrypted body
+   * @return string The decrypted data
+   * @throws Exception If the encrypted body format is invalid or decryption fails
+   */
+  public function decryptEncryptedBody(string $encryptedBody): string {
+    // Decode the base64 encoded encryptedBody
+    $encryptedDataJson = base64_decode($encryptedBody);
+
+    // Decode the JSON string to get the encrypted key, data, iv, and tag
+    $encryptedDataArray = json_decode($encryptedDataJson, true);
+
+    if (
+      (!array_key_exists('encryptedKey', $encryptedDataArray) || !isset($encryptedDataArray['encryptedKey'])) ||
+      (!array_key_exists('encryptedData', $encryptedDataArray) || !isset($encryptedDataArray['encryptedData'])) ||
+      (!array_key_exists('iv', $encryptedDataArray) || !isset($encryptedDataArray['iv'])) ||
+      (!array_key_exists('tag', $encryptedDataArray) || !isset($encryptedDataArray['tag']))
+    ) {
+      throw new Exception('Invalid encrypted body format');
+    }
+
+    // Load the private key
+    $privateKey = PublicKeyLoader::load($this->getJwtPrivateKey())->withPadding(RSA::ENCRYPTION_OAEP);
+
+    // Decode the base64 encoded encrypted key, iv, and tag
+    $encryptedKeyBinary = base64_decode($encryptedDataArray['encryptedKey']);
+    $ivBinary = base64_decode($encryptedDataArray['iv']);
+    $tagBinary = base64_decode($encryptedDataArray['tag']);
+
+    // Decrypt the AES key
+    $aesKey = $privateKey->decrypt($encryptedKeyBinary);
+
+    // Decode the base64 encoded encrypted data
+    $encryptedDataBinary = base64_decode($encryptedDataArray['encryptedData']);
+
+    // Initialize AES decryption
+    $aes = new AES('gcm');
+    $aes->setKey($aesKey);
+    $aes->setNonce($ivBinary);
+    $aes->setTag($tagBinary);
+
+    // Decrypt the data
+    return $aes->decrypt($encryptedDataBinary);
   }
 
   /**

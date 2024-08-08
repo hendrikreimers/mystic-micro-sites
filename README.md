@@ -44,6 +44,7 @@ Mystic Micro Sites is a secure and efficient platform for creating mini-websites
 - **Modular Codebase**: Designed for easy extension and customization, making it suitable for various development needs.
 - **Custom Template Engine**: Small high functional Template Engine for dynamic content rendering, build from scratch with own HTML DOM Parser. Of course, it's not so efficient like Symfony's Crawler, but it was for personal educational purpose.
 - **QR Codes:**: Generates QR Codes as downloadable Image of the generated Mystic URL.
+- **Many more**: Encrypting sensitive data on post requests. Import functionality of JSON (decrypt it on server first). And many more ;-)
 
 ## Use cases
 
@@ -158,12 +159,12 @@ Mystic Micro Sites is a secure and efficient platform for creating mini-websites
 
 ## Future Enhancements
 
-- **Performance Optimization**: Explore ways to improve load times and encryption efficiency.
 - **UI Improvements**: Enhance user interface for greater usability and accessibility.
-- **Extended Plugin System**: Develop a plugin system for additional features and integrations.
 - **Testing and CI/CD**: Integrate continuous testing and deployment workflows for automated quality assurance.
 - **Advanced Analytics**: Implement analytics to track user interactions and improve user engagement.
-- **Time Limit**: Time limited access for microsites.
+- **Time Limit**: Time limited access for microsites (self destroy)
+- **Key rotation**: Maybe add some key rotation (minimum for JWT Keys)
+- **Encrypt Private Key**: Encrypt with passwords and master Password the main private key on server side (nice to have)
  
 ## Contribution
 

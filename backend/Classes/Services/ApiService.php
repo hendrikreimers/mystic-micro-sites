@@ -127,6 +127,26 @@ class ApiService {
   }
 
   /**
+   * Gets request post data and decrypts the encryptedBody part
+   *
+   * @return array|null
+   */
+  private function getPostData(): array | null {
+    // Decode the POST Request
+    $postData = json_decode($this->request->getContent(), true);
+
+    // Decrypt Post Data
+    if ( array_key_exists('encryptedBody', $postData) ) {
+      $decryptedBody = $this->encryptionService->decryptEncryptedBody($postData['encryptedBody']);
+      unset($postData['encryptedBody']);
+      $postData = array_merge($postData, json_decode($decryptedBody, true));
+      unset($decryptedBody);
+    }
+
+    return $postData;
+  }
+
+  /**
    * Endpoint Handler: 404
    * Fallback if nothing else is available
    *
@@ -145,7 +165,7 @@ class ApiService {
    */
   private function endpoint_LOGIN(): void {
     // Decode the POST Request
-    $postData = json_decode($this->request->getContent(), true);
+    $postData = $this->getPostData();
 
     // Initialize username and password
     $username = StringUtility::escapeString(($postData['username'] ?? ''), true);
@@ -206,7 +226,7 @@ class ApiService {
    * @return void
    */
   private function endpoint_REFRESH(): void {
-    $postData = json_decode($this->request->getContent(), true);
+    $postData = $this->getPostData();
     $refreshToken = $postData['refreshToken'] ?? '';
 
     $data = $this->jwtHelper->validateTokenHeader($refreshToken, isRefreshToken: true);
@@ -250,7 +270,7 @@ class ApiService {
    */
   private function endpoint_SAVE(): void {
     $authHeader = $this->request->headers->get('Authorization');
-    $postData = json_decode($this->request->getContent(), true);
+    $postData = $this->getPostData();
 
     // Data and Security validation
     // @todo CSRF Token validation Maybe useless, because the CSRF check will be checked already on class construct
@@ -312,6 +332,16 @@ class ApiService {
       // Send error
       $this->response->sendStatusError('INVALID_DATA');
     }
+  }
+
+  /**
+   * Returns the JWT Public Key
+   *
+   * @throws \Exception
+   */
+  private function endpoint_GETPUB(): void {
+    $publicKey = $this->encryptionService->getJwtPublicKey();
+    $this->response->setContent(json_encode(['publicKey' => $publicKey]));
   }
 
 }

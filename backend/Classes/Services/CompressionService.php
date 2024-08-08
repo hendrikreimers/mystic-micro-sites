@@ -42,7 +42,7 @@ class CompressionService {
       if (function_exists('bzdecompress')) {
         $result = bzdecompress($input);
       } elseif (function_exists('gzuncompress')) {
-        $result = gzuncompress($input);
+        $result = @gzuncompress($input);
       } else {
         $result = http_deflate($input);
       }

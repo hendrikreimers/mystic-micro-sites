@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import { TokenService } from './token.service';
 import {ApiConfig} from "../Configs/ApiConfig";
+import {CryptoService} from "./crypto.service";
+import {catchError, switchMap} from "rxjs/operators";
 
 /**
  * API Call Service
@@ -24,10 +26,12 @@ export class ApiService {
    *
    * @param http
    * @param tokenService
+   * @param cryptoService
    */
   constructor(
     private http: HttpClient,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private cryptoService: CryptoService
   ) {}
 
   /**
@@ -48,17 +52,65 @@ export class ApiService {
 
   /**
    * Generative HTTP POST Method
+   *
    * @param action
    * @param body
    */
-  public post<T,R>(action: string, body: T): Observable<R> {
-    const postBody: T & {csrf_token: string | null} = Object.assign({}, body, { csrf_token: this.tokenService.getCsrfToken() });
+  public post<T, R>(action: string, body: T): Observable<R> {
+    if (!this.cryptoService.isInitialized) {
+      return this.initializeCryptoService().pipe(
+        switchMap(() => this.encryptAndPost(action, body))
+      ) as Observable<R>;
+    } else {
+      return this.encryptAndPost(action, body);
+    }
+  }
 
-    return this.http.post<R>(
-      `${this.apiUrl}?action=${action}`,
-      postBody,
-      { withCredentials: true }
-    )
+  /**
+   * Initializes the CryptoService by fetching the public key
+   *
+   * @returns {Observable<void>}
+   */
+  private initializeCryptoService(): Observable<void> {
+    return this.get<{ publicKey: string }>('getpub').pipe(
+      switchMap((response) => {
+        if (response.publicKey) {
+          return from(this.cryptoService.init(response.publicKey));
+        } else {
+          throw new Error('Public key not found in response');
+        }
+      }),
+      catchError((error) => {
+        console.error('Failed to initialize CryptoService', error);
+        return of(undefined) as Observable<void>;
+      })
+    );
+  }
+
+  /**
+   * Encrypts the body and sends a POST request
+   *
+   * @param action
+   * @param body
+   * @private
+   */
+  private encryptAndPost<T, R>(action: string, body: T): Observable<R> {
+    return from(this.cryptoService.hybridEncrypt(JSON.stringify(body))).pipe(
+      switchMap((encryptedBody: string) => {
+        const postBody: { csrf_token: string | null; encryptedBody: string } = {
+          csrf_token: this.tokenService.getCsrfToken(),
+          encryptedBody: encryptedBody,
+        };
+
+        return this.http.post<R>(`${this.apiUrl}?action=${action}`, postBody, {
+          withCredentials: true,
+        });
+      }),
+      catchError((error) => {
+        console.error('Failed to encrypt data', error);
+        return of(undefined) as Observable<R>;
+      })
+    );
   }
 
 }

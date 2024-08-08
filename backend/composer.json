@@ -15,6 +15,7 @@
     "ramsey/uuid": "^4.7",
     "symfony/rate-limiter": "^7.1",
     "symfony/http-foundation": "^7.1",
-    "symfony/expression-language": "^7.1"
+    "symfony/expression-language": "^7.1",
+    "phpseclib/phpseclib": "^3.0"
   }
 }
