@@ -18,12 +18,14 @@
 </mms:comment>
 <mms:forEach each="{{ elements }}" as="element" index="myIndex">
   <mms:if condition="'{{ element.type.value }}' == 'headline'">
-    <mms:if condition="'{{ element.element.layout }}' == '1'"><h1>{{ element.element.value }}</h1></mms:if>
-    <mms:if condition="'{{ element.element.layout }}' == '2'"><h2>{{ element.element.value }}</h2></mms:if>
-    <mms:if condition="'{{ element.element.layout }}' == '3'"><h3>{{ element.element.value }}</h3></mms:if>
-    <mms:if condition="'{{ element.element.layout }}' == '4'"><h4>{{ element.element.value }}</h4></mms:if>
-    <mms:if condition="'{{ element.element.layout }}' == '5'"><h5>{{ element.element.value }}</h5></mms:if>
-    <mms:if condition="'{{ element.element.layout }}' == '6'"><h6>{{ element.element.value }}</h6></mms:if>
+    <mms:strReplace search="&amp;apos;" replace="&#39;">
+      <mms:if condition="'{{ element.element.layout }}' == '1'"><h1>{{ element.element.value }}</h1></mms:if>
+      <mms:if condition="'{{ element.element.layout }}' == '2'"><h2>{{ element.element.value }}</h2></mms:if>
+      <mms:if condition="'{{ element.element.layout }}' == '3'"><h3>{{ element.element.value }}</h3></mms:if>
+      <mms:if condition="'{{ element.element.layout }}' == '4'"><h4>{{ element.element.value }}</h4></mms:if>
+      <mms:if condition="'{{ element.element.layout }}' == '5'"><h5>{{ element.element.value }}</h5></mms:if>
+      <mms:if condition="'{{ element.element.layout }}' == '6'"><h6>{{ element.element.value }}</h6></mms:if>
+    </mms:strReplace>
   </mms:if>
   <mms:if condition="'{{ element.type.value }}' == 'text'">
     <p>{{ element.element.value }}</p>
@@ -43,27 +45,41 @@
           <span class="icon-vcard"></span>
         </div>
         <div class="vcard__details">
-          <div class="details__companyName">
-            <strong>{{ element.element.companyName }}</strong>
-          </div>
-          <div class="details__firstName">
-            <strong>{{ element.element.firstName }} {{ element.element.lastName }}</strong>
-          </div>
-          <div class="details__address">
-            {{ element.element.address }}
-          </div>
-          <div class="details__phone">
-            <strong>Phone:</strong>&nbsp;<a class="link--simple" href="tel:{{ element.element.phone }}">{{ element.element.phone }}</a>
-          </div>
-          <div class="details__mobile">
-            <strong>Mobile:</strong>&nbsp;<a class="link--simple" href="tel:{{ element.element.mobile }}">{{ element.element.mobile }}</a>
-          </div>
-          <div class="details__email">
-            <a href="mailto:{{ element.element.email }}">{{ element.element.email }}</a>
-          </div>
-          <div class="details__website">
-            <a href="{{ element.element.website }}" target="_blank">{{ element.element.website }}</a>
-          </div>
+          <mms:if condition="'{{ element.element.companyName }}' !== ''">
+            <div class="details__companyName">
+              <strong>{{ element.element.companyName }}</strong>
+            </div>
+          </mms:if>
+          <mms:if condition="'{{ element.element.firstName }}' !== '' || '{{ element.element.lastName }}' !== ''">
+            <div class="details__firstName">
+              <strong>{{ element.element.firstName }} {{ element.element.lastName }}</strong>
+            </div>
+          </mms:if>
+          <mms:if condition="'{{ element.element.address }}' !== ''">
+            <div class="details__address">
+              {{ element.element.address }}
+            </div>
+          </mms:if>
+          <mms:if condition="'{{ element.element.phone }}' !== ''">
+            <div class="details__phone">
+              <strong>Phone:</strong>&nbsp;<a class="link--simple" href="tel:{{ element.element.phone }}">{{ element.element.phone }}</a>
+            </div>
+          </mms:if>
+          <mms:if condition="'{{ element.element.mobile }}' !== ''">
+            <div class="details__mobile">
+              <strong>Mobile:</strong>&nbsp;<a class="link--simple" href="tel:{{ element.element.mobile }}">{{ element.element.mobile }}</a>
+            </div>
+          </mms:if>
+          <mms:if condition="'{{ element.element.email }}' !== ''">
+            <div class="details__email">
+              <a href="mailto:{{ element.element.email }}">{{ element.element.email }}</a>
+            </div>
+          </mms:if>
+          <mms:if condition="'{{ element.element.website }}' !== ''">
+            <div class="details__website">
+              <a href="{{ element.element.website }}" target="_blank">{{ element.element.website }}</a>
+            </div>
+          </mms:if>
         </div>
       </div>
       <div class="vcard__download link">

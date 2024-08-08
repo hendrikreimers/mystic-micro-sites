@@ -5,6 +5,7 @@ import {Button} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {containsHtmlEntities, htmlDecode} from "../../../Utility/TransformUtility";
 
 @Component({
   selector: 'vcard-field',
@@ -43,14 +44,23 @@ export class VcardFieldComponent extends BaseFieldComponent<SiteElementVcard> im
    *
    */
   ngOnInit(): void {
-    this.firstName = this.elementConfig.element.firstName;
-    this.lastName = this.elementConfig.element.lastName;
-    this.address = this.elementConfig.element.address;
+    this.firstName = this.htmlDecodeField(this.elementConfig.element.firstName);
+    this.lastName = this.htmlDecodeField(this.elementConfig.element.lastName);
+    this.address = this.htmlDecodeField(this.elementConfig.element.address);
     this.email = this.elementConfig.element.email;
     this.website = this.elementConfig.element.website;
     this.phone = this.elementConfig.element.phone;
     this.mobile = this.elementConfig.element.mobile;
-    this.companyName = this.elementConfig.element.companyName;
+    this.companyName = this.htmlDecodeField(this.elementConfig.element.companyName);
+  }
+
+  /**
+   * Decodes a HTML encoded value if needed
+   * @param value
+   * @protected
+   */
+  protected htmlDecodeField(value: string): string {
+    return containsHtmlEntities(value) ? htmlDecode(value) : value;
   }
 
   /**

@@ -9,6 +9,7 @@ import {BaseFieldComponent} from "../../../Classes/BaseFieldComponent";
 import {headerLayoutOptions} from "../../../Configs/DropdownOptions";
 
 import {SiteElementHeadline} from "../../../Models/SiteElementHeadlineModel";
+import {containsHtmlEntities, htmlDecode} from "../../../Utility/TransformUtility";
 
 class SiteElementHead {
 }
@@ -66,7 +67,8 @@ export class HeadlineFieldComponent extends BaseFieldComponent<SiteElementHeadli
    *
    */
   ngOnInit(): void {
-    this.headlineValue = this.elementConfig.element.value
+    const value: string = this.elementConfig.element.value;
+    this.headlineValue = containsHtmlEntities(value) ? htmlDecode(value) : value;
   }
 
   /**

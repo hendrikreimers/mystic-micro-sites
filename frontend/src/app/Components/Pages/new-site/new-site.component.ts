@@ -15,7 +15,11 @@ import {DropdownOptions, DropdownOptionsInterface} from "../../../Interfaces/Dro
 import {DropdownModule} from "primeng/dropdown";
 import {fontFamilyOptions} from "../../../Configs/DropdownOptions";
 import {SitePreviewComponent} from "../../Elements/site-preview/site-preview.component";
-import {base64Decode, base64Encode, transformSiteElementType} from "../../../Utility/TransformUtility";
+import {
+  base64Encode,
+  removeNewlinesEvery120Chars,
+  transformSiteElementType
+} from "../../../Utility/TransformUtility";
 import {SaveDialogComponent} from "../../Molecules/save-dialog/save-dialog.component";
 import {DialogEventDataInterface} from "../../../Interfaces/DialogDataInterface";
 import {GlobalContextStorageService} from "../../../Service/globalContextStorage.service";
@@ -103,10 +107,13 @@ export class NewSiteComponent implements OnInit {
    *
    */
   ngOnInit(): void {
-    const savedSiteLayout = this.globalStorageService.getStorageValue('saveSite.siteLayoutEncoded');
+    const siteLayoutImported = this.globalStorageService.getStorageValue('siteLayoutImported');
 
-    if ( typeof savedSiteLayout === 'string' ) {
-      this.siteLayout = base64Decode(savedSiteLayout) as SiteLayout;
+    if ( typeof siteLayoutImported === 'string' ) {
+      const json = JSON.parse(removeNewlinesEvery120Chars(siteLayoutImported));
+      this.siteLayout = SiteLayout.fromJSON(json);
+
+      this.globalStorageService.setStorageValue('siteLayoutImported', null);
     }
   }
 

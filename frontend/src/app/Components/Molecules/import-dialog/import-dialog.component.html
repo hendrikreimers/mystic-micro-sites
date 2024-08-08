@@ -1,0 +1,18 @@
+<div class="card">
+  <p-dialog header="Import JSON" (onHide)="onClose($event)" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <div class="text">
+      <p>If you have decoded your sites with the server side PHP Decode script,</p>
+      <p>You are able to import that JSON from that file, to create a new site based on that.</p>
+    </div>
+    <textarea
+      rows="5"
+      cols="30"
+      pInputTextarea
+      [(ngModel)]="siteLayoutImported">
+</textarea>
+    <div class="button-group">
+      <p-button class="button" label="Cancel" severity="secondary" (onClick)="onButtonClick($event, 'cancelBtn')" />
+      <p-button class="button" [disabled]="importBtnDisabled" label="Import" (onClick)="onButtonClick($event, 'importBtn')" />
+    </div>
+  </p-dialog>
+</div>

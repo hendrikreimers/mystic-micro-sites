@@ -23,4 +23,13 @@ export class SiteElement<T> implements SiteElementInterface<T>, ToJsonInterface 
       element: this.element
     }
   }
+
+  /**
+   * Create an instance of SiteElement from a JSON object
+   *
+   * @param json
+   */
+  static fromJSON<T>(json: SiteElementInterface<T>): SiteElement<T> {
+    return new SiteElement(json.uid, json.type, json.element);
+  }
 }

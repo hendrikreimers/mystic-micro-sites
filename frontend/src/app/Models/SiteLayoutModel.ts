@@ -51,5 +51,15 @@ export class SiteLayout implements SiteLayoutInterface, ToJsonInterface {
       elements: this.elements.map((element: SiteElementInterface<SiteElements>) => (element as SiteElement<SiteElements>).toJSON())
     };
   }
+
+  /**
+   * Create an instance of SiteLayout from a JSON object
+   *
+   * @param json
+   */
+  static fromJSON(json: SiteLayoutInterface): SiteLayout {
+    const elements = json.elements.map((element: SiteElementInterface<SiteElements>) => SiteElement.fromJSON(element));
+    return new SiteLayout(json.textColor, json.bgColor, json.fontFamily, elements);
+  }
 }
 

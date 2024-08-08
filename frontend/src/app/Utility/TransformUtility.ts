@@ -59,6 +59,18 @@ export function base64Decode(value: string): string | object {
 }
 
 /**
+ * Checks if a string contains HTML entities.
+ *
+ * @param {string} input - The string to check.
+ * @returns {boolean} - True if the string contains HTML entities, false otherwise.
+ */
+export function containsHtmlEntities(input: string): boolean {
+  // Regular expression to detect HTML entities
+  const entityPattern: RegExp = /&[a-zA-Z0-9#]+;/g;
+  return entityPattern.test(input);
+}
+
+/**
  * HTML String encoding
  *
  * @param value
@@ -94,4 +106,44 @@ export function htmlDecode(input: string): string {
   const parser: DOMParser = new DOMParser();
   const doc: Document = parser.parseFromString(input, 'text/html');
   return doc.documentElement.textContent || '';
+}
+
+/**
+ * Checks if the JSON string has a newline character every 120 characters except possibly the last segment.
+ *
+ * @param {string} jsonString - The JSON string with line breaks.
+ * @returns {boolean} - True if the string has newlines every 120 characters, false otherwise.
+ */
+export function hasNewlinesEvery120Chars(jsonString: string): boolean {
+  // Split the string by newlines
+  const segments: string[] = jsonString.split('\n');
+
+  // Check each segment except the last one
+  for (let i = 0; i < segments.length - 1; i++) {
+    if (segments[i].length !== 120) {
+      return false;
+    }
+  }
+
+  // The check for the last segment is not needed as it might be less than 120 characters
+  return true;
+}
+
+/**
+ * Removes newline characters from a JSON string that occur every 120 characters.
+ *
+ * @param {string} jsonString - The JSON string with line breaks.
+ * @returns {string} - The JSON string without the unwanted line breaks.
+ */
+export function removeNewlinesEvery120Chars(jsonString: string): string {
+  if (hasNewlinesEvery120Chars(jsonString)) {
+    // Regular expression to match a newline character preceded by 120 characters
+    const regex: RegExp = /(.{120})\n/g;
+
+    // Replace the matched pattern with just the 120 characters (removing the newline)
+    return jsonString.replace(regex, '$1');
+  } else {
+    //console.error("The JSON string does not have newlines every 120 characters.");
+    return jsonString;
+  }
 }

@@ -1,7 +1,7 @@
 /**
  * Possible button types
  */
-export type ButtonPressedTypes = 'saveBtn' | 'cancelBtn' | 'closeBtn';
+export type ButtonPressedTypes = 'saveBtn' | 'cancelBtn' | 'closeBtn' | 'importBtn';
 
 /**
  * Event Emitter Data Object

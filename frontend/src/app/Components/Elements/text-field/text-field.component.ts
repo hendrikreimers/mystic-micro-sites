@@ -6,6 +6,7 @@ import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 
 import {SiteElementText} from "../../../Models/SiteElementTextModel";
+import {containsHtmlEntities, htmlDecode} from "../../../Utility/TransformUtility";
 
 @Component({
   selector: 'text-field',
@@ -37,7 +38,8 @@ export class TextFieldComponent extends BaseFieldComponent<SiteElementText> impl
    *
    */
   ngOnInit(): void {
-    this.textValue = this.elementConfig.element.value
+    const value: string = this.elementConfig.element.value;
+    this.textValue = containsHtmlEntities(value) ? htmlDecode(value) : value;
   }
 
   /**

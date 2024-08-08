@@ -7,3 +7,7 @@
 <p>Enjoy.</p>
 
 <p><a pButton routerLink="/new-site" class="button">Create new Site</a></p>
+
+<p><p-button label="Import SiteLayout JSON" class="importBtn" severity="success" (click)="showImportDialog = true" icon="pi pi-save" /></p>
+
+<import-dialog [visible]="showImportDialog" (buttonClicked)="onImportDialogButtonClick($event)" />

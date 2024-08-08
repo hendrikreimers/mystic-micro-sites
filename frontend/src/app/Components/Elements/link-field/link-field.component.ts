@@ -7,6 +7,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {GeneralConfig} from "../../../Configs/GeneralConfig";
 
 import {SiteElementLink} from "../../../Models/SiteElementLinkModel";
+import {containsHtmlEntities, htmlDecode} from "../../../Utility/TransformUtility";
 
 @Component({
   selector: 'link-field',
@@ -39,7 +40,8 @@ export class LinkFieldComponent extends BaseFieldComponent<SiteElementLink> impl
    *
    */
   ngOnInit(): void {
-    this.titleValue = this.elementConfig.element.title;
+    const value: string = this.elementConfig.element.title;
+    this.titleValue = containsHtmlEntities(value) ? htmlDecode(value) : value;
     this.hrefValue = this.elementConfig.element.href;
   }
 
