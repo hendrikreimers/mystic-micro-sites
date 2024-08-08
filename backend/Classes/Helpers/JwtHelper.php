@@ -63,11 +63,10 @@ class JwtHelper {
    * @return JwtTokensModel
    */
   public function generateTokens(string $username, bool $withRefreshToken = true): JwtTokensModel {
-    $clientInfo = $this->getUserInfo();
-    $token = $this->generateToken($username, $clientInfo->clientIp, $clientInfo->clientUserAgent);
+    $token = $this->generateToken($username);
 
     if ( $withRefreshToken ) {
-      $refreshToken = $this->generateToken($username, $clientInfo->clientIp, $clientInfo->clientUserAgent, true);
+      $refreshToken = $this->generateToken($username, true);
     } else $refreshToken = null;
 
     return new JwtTokensModel($token, $refreshToken);
@@ -80,8 +79,6 @@ class JwtHelper {
    * @return false|array
    */
   public function validateTokenHeader(string $authorizationHeader, bool $isRefreshToken = false): array|false {
-    $clientInfo = $this->getUserInfo();
-
     if ( !$isRefreshToken ) {
       $matches = [];
       preg_match('/Bearer\s(\S+)/', $authorizationHeader, $matches);
@@ -89,7 +86,7 @@ class JwtHelper {
     } else $token = &$authorizationHeader;
 
     // Validate token
-    $data = $this->validateToken($token, $clientInfo->clientIp, $clientInfo->clientUserAgent);
+    $data = $this->validateToken($token);
 
     return ( $data !== null ) ? $data : false;
   }
@@ -101,8 +98,7 @@ class JwtHelper {
    * @return JwtTokensModel|StatusMessageModel
    */
   public function refreshToken(string $refreshToken): JwtTokensModel|false {
-    $clientInfo = $this->getUserInfo();
-    $data = $this->validateToken($refreshToken, $clientInfo->clientIp, $clientInfo->clientUserAgent);
+    $data = $this->validateToken($refreshToken);
 
     if ($data && $data['isRefreshToken']) {
       $token = $this->generateTokens($data['username'], false)->token;
@@ -116,12 +112,10 @@ class JwtHelper {
    * Generates a JWT Token
    *
    * @param string $username
-   * @param string $ipAddress
-   * @param string $userAgent
    * @param bool $isRefreshToken
    * @return string
    */
-  private function generateToken(string $username, string $ipAddress, string $userAgent, bool $isRefreshToken = false): string {
+  private function generateToken(string $username, bool $isRefreshToken = false): string {
     $payload = [
       'iss' => 'yourdomain.com',
       'aud' => 'yourdomain.com',
@@ -130,8 +124,7 @@ class JwtHelper {
       'exp' => time() + ($isRefreshToken ? $this->refreshExpirationTime : $this->expirationTime),
       'data' => [
         'username' => $username,
-        'ip' => $ipAddress,
-        'ua' => $userAgent,
+        'userHash' => $this->createUserHash(),
         'isRefreshToken' => $isRefreshToken
       ]
     ];
@@ -143,16 +136,14 @@ class JwtHelper {
    * Validates a JWT Token
    *
    * @param string $token
-   * @param string $currentIp
-   * @param string $currentUserAgent
    * @return array|null
    */
-  private function validateToken(string $token, string $currentIp, string $currentUserAgent): ?array {
+  private function validateToken(string $token): ?array {
     try {
       $decoded = JWT::decode($token, new Key($this->publicKey, 'RS256'));
       $data = (array) $decoded->data;
 
-      if ($data['ip'] !== $currentIp || $data['ua'] !== $currentUserAgent) {
+      if ($data['userHash'] !== $this->createUserHash()) {
         throw new Exception('Token does not match current IP address or User Agent');
       }
 
@@ -175,6 +166,17 @@ class JwtHelper {
       $clientIp,
       $clientUserAgent
     );
+  }
+
+  /**
+   * Generates a Hash based on Users IP and UserAgent
+   *
+   * @return string
+   */
+  private function createUserHash(): string {
+    $clientInfo = $this->getUserInfo();
+    $data = $clientInfo->clientIp . $clientInfo->clientUserAgent;
+    return hash_hmac('sha256', $data, SECRET_KEY);
   }
 
 }
