@@ -1,10 +1,10 @@
-<div class="field__vcard">
-  <div class="button-group">
+<div class="field__vcard fielgroup--col">
+  <div class="button-group fieldgroup--secondary">
     <p-button [disabled]="areButtonsEnabled()" icon="pi pi-check" severity="success" (click)="onSaveValue($event)" />
     <p-button [disabled]="areButtonsEnabled()" icon="pi pi-times" severity="warning" (click)="onCancelValue($event)"/>
     <p-button icon="pi pi-trash" severity="danger" (click)="onElementRemove()" />
   </div>
-  <div class="input-group">
+  <div class="input-group fieldgroup--main">
     <div class="vcard__input vcard__input--companyName">
       <label for="companyName">Company name</label>
       <input type="text" pInputText [(ngModel)]="companyName" id="companyName" />

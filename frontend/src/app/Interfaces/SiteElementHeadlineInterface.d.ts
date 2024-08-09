@@ -6,4 +6,5 @@ export interface SiteElementHeadlineInterface {
   value: string;
 
   toJSON(): SiteElementHeadlineInterface;
+  getLabel(): string;
 }

@@ -1,6 +1,7 @@
 import {htmlEncode} from "../Utility/TransformUtility";
 import {SiteElementVcardInterface} from "../Interfaces/SiteElementVcardInterface";
 import {ToJsonInterface} from "../Interfaces/ToJsonInterface";
+import {LabelInterface} from "../Interfaces/LabelInterface";
 
 /**
  * MODEL: SiteElementText
@@ -170,5 +171,13 @@ export class SiteElementVcard implements SiteElementVcardInterface, ToJsonInterf
     a.download = `${this.firstName}_${this.lastName}.vcf`;
     a.click();
     window.URL.revokeObjectURL(url);
+  }
+
+  /**
+   * Dashboard Label
+   *
+   */
+  getLabel(): string {
+    return this.companyNameEncoded || this.firstNameEncoded + ' ' + this.lastNameEncoded;
   }
 }

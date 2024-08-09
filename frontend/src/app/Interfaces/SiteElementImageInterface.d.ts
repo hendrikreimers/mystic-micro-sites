@@ -5,4 +5,5 @@ export interface SiteElementImageInterface {
   imageData: string;
 
   toJSON(): SiteElementImageInterface;
+  getLabel(): string;
 }

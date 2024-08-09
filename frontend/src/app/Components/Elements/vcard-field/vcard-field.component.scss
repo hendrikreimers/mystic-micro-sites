@@ -10,7 +10,14 @@
 
     label {
       @apply
+        w-full
+        max-w-[100px]
         mr-2;
+    }
+
+    input {
+      @apply
+        w-full;
     }
   }
 }

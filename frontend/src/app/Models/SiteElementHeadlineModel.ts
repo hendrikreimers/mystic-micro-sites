@@ -1,6 +1,7 @@
 import {SiteElementHeadlineInterface} from "../Interfaces/SiteElementHeadlineInterface";
 import {htmlEncode} from "../Utility/TransformUtility";
 import {ToJsonInterface} from "../Interfaces/ToJsonInterface";
+import {LabelInterface} from "../Interfaces/LabelInterface";
 
 /**
  * MODEL: SiteElementHeadline
@@ -27,5 +28,13 @@ export class SiteElementHeadline implements SiteElementHeadlineInterface, ToJson
       layout: this.layout,
       value: this.valueEncoded
     };
+  }
+
+  /**
+   * Dashboard Label
+   *
+   */
+  getLabel(): string {
+    return this.valueEncoded;
   }
 }

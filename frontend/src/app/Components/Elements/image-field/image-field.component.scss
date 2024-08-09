@@ -1,8 +1,13 @@
 
+.imageBtn button {
+  @apply
+    px-3;
+}
+
 .field__image {
   @apply
-  flex
-  flex-row;
+    flex
+    flex-row;
 
   .input-group {
     @apply
@@ -10,6 +15,7 @@
 
     .input__preview {
       @apply
+        text-left
         bg-white
         border-solid
         border-2

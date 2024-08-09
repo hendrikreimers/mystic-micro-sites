@@ -29,50 +29,67 @@
 
     <div class="editor__fields">
       <div class="field" *ngFor="let elField of siteLayout.elements; index as i;" [ngSwitch]="elField.type">
-        <div class="field__move">
-          <p-button class="button" icon="pi pi-chevron-up" severity="secondary" (click)="moveElementUp(elField.uid)" />
-          <p-button class="button" icon="pi pi-chevron-down" severity="secondary" (click)="moveElementDown(elField.uid)" />
-        </div>
-        <headline-field
-          *ngSwitchCase="'headline'"
-          [elementConfig]="transformSiteElementType(elField)"
-          [uid]="elField.uid"
-          (elementChange)="onElementChange($event)"
-          (elementRemove)="onElementRemove(elField.uid)" />
-        <text-field
-          *ngSwitchCase="'text'"
-          [elementConfig]="transformSiteElementType(elField)"
-          [uid]="elField.uid"
-          (elementChange)="onElementChange($event)"
-          (elementRemove)="onElementRemove(elField.uid)" />
-        <image-field
-          *ngSwitchCase="'image'"
-          [elementConfig]="transformSiteElementType(elField)"
-          [uid]="elField.uid"
-          (elementChange)="onElementChange($event)"
-          (elementRemove)="onElementRemove(elField.uid)" />
-        <link-field
-          *ngSwitchCase="'link'"
-          [elementConfig]="transformSiteElementType(elField)"
-          [uid]="elField.uid"
-          (elementChange)="onElementChange($event)"
-          (elementRemove)="onElementRemove(elField.uid)" />
-        <vcard-field
-          *ngSwitchCase="'vcard'"
-          [elementConfig]="transformSiteElementType(elField)"
-          [uid]="elField.uid"
-          (elementChange)="onElementChange($event)"
-          (elementRemove)="onElementRemove(elField.uid)" />
+        <p-panel [toggleable]="true" [collapsed]="true" class="field__panel">
+          <ng-template pTemplate="header">
+            <div class="field__move">
+              <p-button class="button" icon="pi pi-chevron-up" severity="secondary" [outlined]="true" (click)="moveElementUp(elField.uid)" />
+              <p-button class="button" icon="pi pi-chevron-down" severity="secondary" [outlined]="true" (click)="moveElementDown(elField.uid)" />
+            </div>
+            <div class="field__label">
+              <span class="field__label--first" *ngSwitchCase="'headline'">Headline:&nbsp;</span>
+              <span class="field__label--first" *ngSwitchCase="'text'">Text:&nbsp;</span>
+              <span class="field__label--first" *ngSwitchCase="'image'">Image:&nbsp;</span>
+              <span class="field__label--first" *ngSwitchCase="'link'">Link:&nbsp;</span>
+              <span class="field__label--first" *ngSwitchCase="'vcard'">VCard:&nbsp;</span>
+
+              <span class="field__label--second">{{ elField.element.getLabel() }}</span>
+            </div>
+          </ng-template>
+          <headline-field
+            *ngSwitchCase="'headline'"
+            [elementConfig]="transformSiteElementType(elField)"
+            [uid]="elField.uid"
+            (elementChange)="onElementChange($event)"
+            (elementRemove)="onElementRemove(elField.uid)" />
+          <text-field
+            *ngSwitchCase="'text'"
+            [elementConfig]="transformSiteElementType(elField)"
+            [uid]="elField.uid"
+            (elementChange)="onElementChange($event)"
+            (elementRemove)="onElementRemove(elField.uid)" />
+          <image-field
+            *ngSwitchCase="'image'"
+            [elementConfig]="transformSiteElementType(elField)"
+            [uid]="elField.uid"
+            (elementChange)="onElementChange($event)"
+            (elementRemove)="onElementRemove(elField.uid)" />
+          <link-field
+            *ngSwitchCase="'link'"
+            [elementConfig]="transformSiteElementType(elField)"
+            [uid]="elField.uid"
+            (elementChange)="onElementChange($event)"
+            (elementRemove)="onElementRemove(elField.uid)" />
+          <vcard-field
+            *ngSwitchCase="'vcard'"
+            [elementConfig]="transformSiteElementType(elField)"
+            [uid]="elField.uid"
+            (elementChange)="onElementChange($event)"
+            (elementRemove)="onElementRemove(elField.uid)" />
+        </p-panel>
       </div>
     </div>
 
   </div>
 
   <div class="preview">
-    <div class="preview__label">Preview</div>
-    <div class="preview__content">
-      <site-preview [siteLayout]="siteLayout" />
-    </div>
+    <p-card class="preview__card">
+      <ng-template pTemplate="header">
+        <div class="preview__label">Preview</div>
+      </ng-template>
+      <div class="preview__content">
+        <site-preview [siteLayout]="siteLayout" />
+      </div>
+    </p-card>
   </div>
 
   <save-dialog [visible]="showSaveDialog" (buttonClicked)="onSaveDialogButtonClick($event)" />

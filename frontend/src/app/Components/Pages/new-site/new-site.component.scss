@@ -31,7 +31,30 @@
   @apply
     flex
     flex-row
-    my-4;
+    my-5;
+
+  .field__panel {
+    @apply
+      w-full;
+  }
+
+  .field__label {
+    @apply
+      ml-3;
+
+    .field__label--first {
+      @apply
+        inline-block
+        w-full
+        font-bold;
+    }
+
+    .field__label--second {
+      @apply
+        inline-block
+        w-full;
+    }
+  }
 
   .field__move {
     .button {
@@ -40,9 +63,32 @@
     }
   }
 
+  .fieldgroup--col {
+    @apply
+      flex-col
+      flex;
+  }
+
+  .fieldgroup--row {
+    @apply
+    flex-row
+    flex;
+  }
+
+  .fieldgroup--main {
+    @apply
+      flex-grow;
+  }
+
+  .fieldgroup--secondary {
+    @apply
+      text-right
+      flex-shrink;
+  }
+
   .p-component, .p-element {
     @apply
-      px-1;
+    px-1;
   }
 }
 
@@ -64,22 +110,53 @@
       self-center;
   }
 
+  .p-component, .p-element {
+    @apply
+      px-1;
+  }
+
   #fontFamily {
     @apply
       min-w-[250px];
   }
 }
 
-.preview__content {
+.preview__card {
   @apply
-    border-solid
-    border-2
+    md:ml-10
+    w-full
+    inline-block
+    max-w-[428px];
+
+  .p-card-body {
+    @apply
+      p-0;
+  }
+
+  .p-card-content {
+    @apply
+      p-0;
+  }
+
+  .p-card-header {
+    @apply
+      px-3
+      py-5
+      font-bold
+      md:text-2xl;
+  }
+
+  .preview__content {
+    border-top: 2px solid;
+
+    @apply
     border-gray-400
     block
     max-w-[428px];
 
-  .field {
-    @apply
+    .field {
+      @apply
       block;
+    }
   }
 }

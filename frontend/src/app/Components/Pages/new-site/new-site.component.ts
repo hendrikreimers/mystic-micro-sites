@@ -35,6 +35,8 @@ import {SiteElementHeadline} from "../../../Models/SiteElementHeadlineModel";
 import {SiteElement} from "../../../Models/SiteElementModel";
 import {SiteElementVcard} from "../../../Models/SiteElementVcardModel";
 import {VcardFieldComponent} from "../../Elements/vcard-field/vcard-field.component";
+import {PanelModule} from "primeng/panel";
+import {CardModule} from "primeng/card";
 
 /**
  * PAGE: New Site
@@ -58,7 +60,9 @@ import {VcardFieldComponent} from "../../Elements/vcard-field/vcard-field.compon
     DropdownModule,
     SitePreviewComponent,
     SaveDialogComponent,
-    VcardFieldComponent
+    VcardFieldComponent,
+    PanelModule,
+    CardModule
   ],
   templateUrl: './new-site.component.html',
   styleUrl: './new-site.component.scss',
@@ -115,6 +119,10 @@ export class NewSiteComponent implements OnInit {
 
       this.globalStorageService.setStorageValue('siteLayoutImported', null);
     }
+  }
+
+  public setPanelLabel(label: string, subLabel: string): void {
+
   }
 
   /**
@@ -184,7 +192,7 @@ export class NewSiteComponent implements OnInit {
    * @param type
    * @param elementConfig
    */
-  protected getNewElementBasicConfig<R>(type: SiteElementsTypes, elementConfig: R): SiteElement<R> {
+  protected getNewElementBasicConfig<R extends SiteElements>(type: SiteElementsTypes, elementConfig: R): SiteElement<R> {
     return new SiteElement<R>(
       uuidv6(),
       type,
@@ -267,4 +275,5 @@ export class NewSiteComponent implements OnInit {
     }
   }
 
+  protected readonly SiteElementHeadline = SiteElementHeadline;
 }

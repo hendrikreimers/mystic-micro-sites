@@ -1,6 +1,7 @@
 import {SiteElementLinkInterface} from "../Interfaces/SiteElementLinkInterface";
 import {htmlEncode} from "../Utility/TransformUtility";
 import {ToJsonInterface} from "../Interfaces/ToJsonInterface";
+import {LabelInterface} from "../Interfaces/LabelInterface";
 
 /**
  * MODEL: SiteElementLink
@@ -28,5 +29,13 @@ export class SiteElementLink implements SiteElementLinkInterface, ToJsonInterfac
       title: this.titleEncoded,
       href: this.href
     };
+  }
+
+  /**
+   * Dashboard Label
+   *
+   */
+  getLabel(): string {
+    return this.titleEncoded;
   }
 }

@@ -10,4 +10,7 @@ export interface SiteElementVcardInterface {
   phone: string;
   mobile: string;
   companyName: string;
+
+  toJSON(): SiteElementVcardInterface;
+  getLabel(): string;
 }

@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {SiteElement} from "../Models/SiteElementModel";
+import {SiteElements} from "../Types/SiteElementsType";
 
 /**
  * Base Component for Field Elements
@@ -13,7 +14,7 @@ import {SiteElement} from "../Models/SiteElementModel";
     CommonModule
   ]
 })
-export class BaseFieldComponent<T> {
+export class BaseFieldComponent<T extends SiteElements> {
   // Event Emitters
   @Output() elementChange: EventEmitter<SiteElement<T>> = new EventEmitter<SiteElement<T>>();
   @Output() elementRemove: EventEmitter<string> = new EventEmitter<string>();

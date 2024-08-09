@@ -14,7 +14,7 @@ import {SiteElement} from "../Models/SiteElementModel";
  *
  * @param elField
  */
-export function transformSiteElementType<T>(elField: SiteElement<SiteElements>): SiteElement<T> {
+export function transformSiteElementType<T extends SiteElements>(elField: SiteElement<SiteElements>): SiteElement<T> {
   return elField as SiteElement<T>;
 }
 

@@ -1,11 +1,13 @@
 import {SiteElementInterface} from "../Interfaces/SiteElementInterface";
 import {SiteElementsTypes} from "../Types/SiteElementsTypes";
 import {ToJsonInterface} from "../Interfaces/ToJsonInterface";
+import {LabelInterface} from "../Interfaces/LabelInterface";
+import {SiteElements} from "../Types/SiteElementsType";
 
 /**
  * MODEL: SiteElement
  */
-export class SiteElement<T> implements SiteElementInterface<T>, ToJsonInterface {
+export class SiteElement<T extends SiteElements> implements SiteElementInterface<T>, ToJsonInterface {
   constructor(
     public uid: string,
     public type: SiteElementsTypes,
@@ -29,7 +31,7 @@ export class SiteElement<T> implements SiteElementInterface<T>, ToJsonInterface 
    *
    * @param json
    */
-  static fromJSON<T>(json: SiteElementInterface<T>): SiteElement<T> {
+  static fromJSON<T extends SiteElements>(json: SiteElementInterface<T>): SiteElement<T> {
     return new SiteElement(json.uid, json.type, json.element);
   }
 }

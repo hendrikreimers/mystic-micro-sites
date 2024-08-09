@@ -1,6 +1,7 @@
 import {SiteElementTextInterface} from "../Interfaces/SiteElementTextInterface";
 import {htmlEncode} from "../Utility/TransformUtility";
 import {ToJsonInterface} from "../Interfaces/ToJsonInterface";
+import {LabelInterface} from "../Interfaces/LabelInterface";
 
 /**
  * MODEL: SiteElementText
@@ -23,5 +24,13 @@ export class SiteElementText implements SiteElementTextInterface, ToJsonInterfac
     return <SiteElementTextInterface>{
       value: this.valueEncoded
     };
+  }
+
+  /**
+   * Dashboard Label
+   *
+   */
+  getLabel(): string {
+    return htmlEncode(this.value.substring(0, 20) + '...');
   }
 }

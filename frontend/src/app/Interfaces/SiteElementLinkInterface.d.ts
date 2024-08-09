@@ -6,4 +6,5 @@ export interface SiteElementLinkInterface {
   href: string;
 
   toJSON(): SiteElementLinkInterface;
+  getLabel(): string;
 }
