@@ -92,42 +92,7 @@
 <mms:comment>
   <!-- Functionality copied out from the Angular source to keep it simple -->
 </mms:comment>
-<script type="text/javascript">
-  function downloadVCard(data) {
-    data = JSON.parse(htmlDecode(data));
-
-    const vcardData = this.generateVCard(data);
-    const blob = new Blob([vcardData], { type: 'text/vcard' });
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${data.firstName}_${data.lastName}.vcf`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  }
-
-  function htmlDecode(input) {
-    // The fastest and best way is to use the browsers integrated functionality
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(input, 'text/html');
-    return doc.documentElement.textContent || '';
-  }
-
-  function generateVCard(data) {
-    return [
-      `BEGIN:VCARD`,
-      `VERSION:3.0`,
-      `FN:${data.firstName} ${data.lastName}`,
-      `ORG:${data.companyName}`,
-      `TEL;TYPE=WORK,VOICE:${data.phone}`,
-      `TEL;TYPE=CELL,VOICE:${data.mobile}`,
-      `ADR;TYPE=WORK,PREF:;;${data.address}`,
-      `EMAIL:${data.email}`,
-      `URL:${data.website}`,
-      `END:VCARD`
-    ].join("\n").trim();
-  }
-</script>
+<script type="text/javascript" src="/Resources/Public/vcard.js"></script>
+<script type="text/javascript" src="/Resources/Public/microsite.js"></script>
 </body>
 </html>
