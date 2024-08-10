@@ -33,6 +33,7 @@ if ($request->getMethod() === 'POST') {
   // Get URL query parameters
   $fileId = $request->get('id');
   $keyParts = $request->get('key');
+  $noVcard = $request->get('noVcard') ?: false;
 
   // Simple Check
   if ((!$fileId || !$keyParts)) {
@@ -46,13 +47,14 @@ if ($request->getMethod() === 'POST') {
   $hash = StringUtility::hashString(implode('', [
     $fileId,
     $keyParts,
+    $noVcard,
     $timestamp,
     $request->getClientIp(),
     $request->headers->get('User-Agent')
   ]), SECRET_KEY);
 
   // Build the data for the URL query param
-  $params = json_encode([$fileId, $keyParts, $timestamp, $hash]);
+  $params = json_encode([$fileId, $keyParts, $noVcard, $timestamp, $hash]);
 
   // Transform data appending hash
   $params = urlencode(rawurlencode(EnigmaBase64Service::enigmaBase64Encode($params)));
@@ -78,16 +80,19 @@ if ($request->getMethod() === 'POST') {
   <script>
     window.onload = function () {
       // Extract the hash part of the URL
-      var hash = window.location.hash.slice(1).split('/'); // Remove the "#" from the beginning
+      let hash = window.location.hash.slice(1).split('/'); // Remove the "#" from the beginning
 
       // Create an object from the hash parameters
-      var params = new URLSearchParams('id=' + hash[1] + '&key=' + hash[0]);
-      var fileId = params.get('id');
-      var keyParts = params.get('key');
+      let params = new URLSearchParams('id=' + hash[1] + '&key=' + hash[0]);
+      let fileId = params.get('id');
+      let keyParts = params.get('key');
+
+      let queryParams =  new URLSearchParams(window.location.search);
+      let noVcard = queryParams.get('noVcard') || '0';
 
       // Send the data to the server via POST
       if (fileId && keyParts) {
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open("POST", window.location.pathname, true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
@@ -101,7 +106,7 @@ if ($request->getMethod() === 'POST') {
           }
         };
 
-        xhr.send("id=" + encodeURIComponent(fileId) + "&key=" + encodeURIComponent(keyParts));
+        xhr.send("id=" + encodeURIComponent(fileId) + "&key=" + encodeURIComponent(keyParts) + "&noVcard=" + encodeURIComponent(noVcard));
       } else {
         window.location.replace('/404');
       }

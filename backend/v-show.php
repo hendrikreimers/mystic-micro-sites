@@ -43,12 +43,13 @@ if ( !$params ) {
 }
 
 // Decrypt and push results to variables
-[$fileId, $keyParts, $timestamp, $hashSend] = json_decode(EnigmaBase64Service::enigmaBase64Decode($params));
+[$fileId, $keyParts, $noVcard, $timestamp, $hashSend] = json_decode(EnigmaBase64Service::enigmaBase64Decode($params));
 
 // Create a comparison hash
 $hashLocal = StringUtility::hashString(implode('', [
   $fileId,
   $keyParts,
+  $noVcard,
   $timestamp,
   $request->getClientIp(),
   $request->headers->get('User-Agent')
@@ -117,7 +118,8 @@ $template->view->assignMultiple([
   'textColor' => $siteLayout->textColor,
   'fontFamily' => $siteLayout->fontFamily->value,
   'elements' => ObjectUtility::objectToArray($siteLayout->elements),
-  'baseUrl' => BASE_URL
+  'baseUrl' => BASE_URL,
+  'noVcard' => ( $noVcard ) ? '1' : '0'
 ]);
 
 // Render output

@@ -45,7 +45,7 @@ Mystic Micro Sites is a secure and efficient platform for creating mini-websites
 - **Custom Template Engine**: Small high functional Template Engine for dynamic content rendering, build from scratch with own HTML DOM Parser. Of course, it's not so efficient like Symfony's Crawler, but it was for personal educational purpose.
 - **QR Codes:**: Generates QR Codes as downloadable Image of the generated Mystic URL.
 - **Many more**: Encrypting sensitive data on post requests. Import functionality of JSON (decrypt it on server first). And many more ;-)
-
+- **Hide VCards**: Add "?noVcard=1" to url (after /view/, before hastag) to temporary hide the vcards
 ## Use cases
 
 1. **Secure Digital Memorabilia**

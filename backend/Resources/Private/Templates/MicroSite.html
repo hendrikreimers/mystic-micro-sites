@@ -38,7 +38,7 @@
       <a href="{{ element.element.href }}" target="_blank">{{ element.element.title }}</a>
     </div>
   </mms:if>
-  <mms:if condition="'{{ element.type.value }}' == 'vcard'">
+  <mms:if condition="'{{ element.type.value }}' == 'vcard' && '{{ noVcard }}' === '0'">
     <div class="vcard">
       <div class="vcard__card">
         <div class="icon">
