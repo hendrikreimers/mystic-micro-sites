@@ -46,7 +46,7 @@ abstract class BaseViewHelper {
         }
 
         if ( $argument['jsonDecode'] ) {
-          $argumentValue = json_decode($argumentValue, true);
+          $argumentValue = $this->decodeMalformedJson($argumentValue);
         }
 
         $argument['value'] = $argumentValue;
@@ -116,6 +116,28 @@ abstract class BaseViewHelper {
 
     // Render HTML
     return $this->engine->render();
+  }
+
+  /**
+   * Decodes a JSON string that may use single quotes instead of double quotes.
+   * The conversion only happens if the string is entirely wrapped in single quotes.
+   *
+   * @param string $jsonString The JSON string to decode.
+   * @return mixed Returns the decoded JSON data or null on failure.
+   */
+  protected function decodeMalformedJson(string $jsonString): mixed {
+    // Check if the string starts with '[' and ends with ']', and contains only single quotes
+    if (preg_match("/^\['.*'\]$/", $jsonString) && !str_contains($jsonString, '"')) {
+      // Replace single quotes with double quotes
+      $validJsonString = str_replace('"', '\"', $jsonString);
+      $validJsonString = str_replace("'", '"', $validJsonString);
+
+      // Decode the JSON string
+      return json_decode($validJsonString, true);
+    }
+
+    // If it's already a valid JSON string, decode it directly
+    return json_decode($jsonString, true);
   }
 
 }
