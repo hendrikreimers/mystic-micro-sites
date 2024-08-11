@@ -9,6 +9,20 @@
 
 .p-field {
   margin-bottom: 1rem;
+  @apply
+    flex
+    flex-row
+    items-center;
+
+  label {
+    @apply
+      flex-grow
+      text-[1.05rem];
+  }
+
+  input {
+    width: 70%;
+  }
 }
 
 button {
