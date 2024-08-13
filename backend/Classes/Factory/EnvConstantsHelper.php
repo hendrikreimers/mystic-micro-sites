@@ -37,6 +37,7 @@ class EnvConstantsHelper {
     define("MASTER_PASSWORD_HASH", $encryptionService->decryptDataWithKeyPair(MASTER_PASSWORD));
 
     define("VIEW_TIMELIMIT", $_ENV['VIEW_TIMELIMIT'] ?? 10);
+    define("RELOAD_AFTER_MINUTES", $_ENV['RELOAD_AFTER_MINUTES'] ?? 3);
   }
 
 }
