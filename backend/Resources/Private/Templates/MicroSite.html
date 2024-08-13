@@ -93,5 +93,10 @@
 </mms:comment>
 <script type="text/javascript" src="/Resources/Public/vcard.js"></script>
 <script type="text/javascript" src="/Resources/Public/microsite.js"></script>
+
+<mms:comment>
+  <!-- This will force a reload after X minutes (configured in .env file) to handle an open browser window/tab -->
+</mms:comment>
+<i style="display: none;" id="reloadAfter" data-reloadAfter="{{ reload_after_minutes }}"></i>
 </body>
 </html>

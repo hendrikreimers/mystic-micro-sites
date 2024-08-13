@@ -119,7 +119,8 @@ $template->view->assignMultiple([
   'fontFamily' => $siteLayout->fontFamily->value,
   'elements' => ObjectUtility::objectToArray($siteLayout->elements),
   'baseUrl' => BASE_URL,
-  'noVcard' => ( $noVcard ) ? '1' : '0'
+  'noVcard' => ( $noVcard ) ? '1' : '0',
+  'reload_after_minutes' => ( defined('RELOAD_AFTER_MINUTES') ) ? RELOAD_AFTER_MINUTES : 3
 ]);
 
 // Render output
