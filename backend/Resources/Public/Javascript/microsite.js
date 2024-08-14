@@ -130,9 +130,9 @@ function onLoad() {
   devToolsDetector();
 
   // Overwrite console outputs
-  // console.log = console.warn = console.error = console.info = () => {
-  //   // Empty function
-  // };
+  console.log = console.warn = console.error = console.info = () => {
+    // Empty function
+  };
 
   // Prevents screenshots using the PrintScreen button
   addEvent(document, 'keydown', (e) => {
