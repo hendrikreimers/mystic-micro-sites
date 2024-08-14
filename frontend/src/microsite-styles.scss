@@ -4,9 +4,9 @@
  */
 
 #body {
-  margin: 0 auto;
-  overflow-x: hidden;
-  overflow-y: auto;
+  margin: 0 auto !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
 
   @apply
     px-0
