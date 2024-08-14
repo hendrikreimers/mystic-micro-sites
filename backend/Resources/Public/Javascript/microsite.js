@@ -58,7 +58,8 @@ function devToolsDetector() {
 
     // If DevTools are open, hide the content
     if (devtoolsOpen) {
-      document.body.style.visibility = 'hidden';
+      window.location.href = '/404';
+      // document.body.style.visibility = 'hidden';
     }
   }
 
