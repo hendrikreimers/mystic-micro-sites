@@ -39,5 +39,3 @@ $finalUrl = "/show/$p";
 
 header("Location: $finalUrl", true, 303); // 303 See Other
 exit();
-
-?>

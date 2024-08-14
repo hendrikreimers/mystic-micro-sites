@@ -9,12 +9,16 @@
   <meta http-equiv="Expires" content="0" />
   <title>MysticMicroSite</title>
   <link rel="stylesheet" href="{{ baseUrl }}/microsite.css">
+  <style>
+    #body { background-color: {{ bgColor }}; color: {{ textColor }}; }
+    #body.hidden { display: none; visibility: hidden; }
+  </style>
+  <noscript>
+    <style>html,body { display:none; }</style>
+    <meta http-equiv="refresh" content="0.0;url=/404">
+  </noscript>
 </head>
-<body id="body" class="hidden font-family__{{ fontFamily }}" style="background-color: {{ bgColor }}; color: {{ textColor }}">
-<mms:comment>
-  <!-- It's difficult to pass a JSON string into an attribute, i was bored so i made a workaounrd by adding pipe calls
-  pipe calls are calling an php function before inserting the variable. eachPipe attribute reverse it before using it -->
-</mms:comment>
+<body id="body" class="hidden font-family__{{ fontFamily }}">
 <mms:forEach each="{{ elements }}" as="element" index="myIndex">
   <mms:if condition="'{{ element.type.value }}' == 'headline'">
     <mms:strReplace search="&amp;apos;" replace="&#39;">
@@ -87,16 +91,7 @@
     </div>
   </mms:if>
 </mms:forEach>
-
-<mms:comment>
-  <!-- Functionality copied out from the Angular source to keep it simple -->
-</mms:comment>
-<script type="text/javascript" src="/Resources/Public/vcard.js"></script>
-<script type="text/javascript" src="/Resources/Public/microsite.js"></script>
-
-<mms:comment>
-  <!-- This will force a reload after X minutes (configured in .env file) to handle an open browser window/tab -->
-</mms:comment>
+<mms:inlineJsFile files="['vcard.js', 'microsite.js']" minify="1" cache="1"></mms:inlineJsFile>
 <i style="display: none;" id="reloadAfter" data-reloadAfter="{{ reload_after_minutes }}"></i>
 </body>
 </html>

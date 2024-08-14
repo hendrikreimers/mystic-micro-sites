@@ -17,6 +17,7 @@ use Helpers\RateLimitHelper;
 use Helpers\ResponseHelper;
 use Services\EnigmaBase64Service;
 use Symfony\Component\HttpFoundation\Request;
+use Template\TemplateEngine;
 use Utility\StringUtility;
 
 // Global Environment Constants declaration
@@ -65,55 +66,14 @@ if ($request->getMethod() === 'POST') {
   // Return the URL for the next step instead of redirecting
   echo json_encode(['redirectUrl' => $middleUrl]);
   exit();
+} else {
+  // Show the HTML redirect template
+  $templatePath = join(DIRECTORY_SEPARATOR, [BASE_PATH, 'Resources', 'Private', 'Templates']);
+  $template = new TemplateEngine($templatePath . DIRECTORY_SEPARATOR. 'view.html');
+
+  // Assign variables
+  $template->view->assign('baseUrl', BASE_URL);
+
+  // Render output
+  echo $template->render();
 }
-?>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Processing...</title>
-  <meta charset="UTF-8">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="pragma" content="no-cache">
-  <meta http-equiv="expires" content="0">
-  <script>
-    window.onload = function () {
-      // Extract the hash part of the URL
-      let hash = window.location.hash.slice(1).split('/'); // Remove the "#" from the beginning
-
-      // Create an object from the hash parameters
-      let params = new URLSearchParams('id=' + hash[1] + '&key=' + hash[0]);
-      let fileId = params.get('id');
-      let keyParts = params.get('key');
-
-      let queryParams =  new URLSearchParams(window.location.search);
-      let noVcard = queryParams.get('noVcard') || '0';
-
-      // Send the data to the server via POST
-      if (fileId && keyParts) {
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", window.location.pathname, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            // Parse the response JSON
-            var response = JSON.parse(xhr.responseText);
-
-            // Leitet weiter zu der URL, die der Server zurückgegeben hat
-            window.location.replace( response.redirectUrl);
-          }
-        };
-
-        xhr.send("id=" + encodeURIComponent(fileId) + "&key=" + encodeURIComponent(keyParts) + "&noVcard=" + encodeURIComponent(noVcard));
-      } else {
-        window.location.replace('/404');
-      }
-    };
-  </script>
-</head>
-<body>
-<p>Process data...</p>
-</body>
-</html>
