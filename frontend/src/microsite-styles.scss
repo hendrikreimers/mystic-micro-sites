@@ -1,6 +1,12 @@
+/**
+ * General
+ *
+ */
+
 #body {
   margin: 0 auto;
   overflow-x: hidden;
+  overflow-y: auto;
 
   @apply
     px-0
@@ -38,6 +44,11 @@
     font-family: 'Comic Sans MS', serif;
   }
 }
+
+/**
+ * Headlines
+ *
+ */
 
 h1, h2, h3, h4, h5, h6,
 .link, p, .vcard {
@@ -81,11 +92,25 @@ h5, h6 {
     font-normal;
 }
 
+
+
+/**
+ * Text
+ *
+ */
+
 p {
   @apply
     mt-3
     mb-5;
 }
+
+
+
+/**
+ * Link Buttons
+ *
+ */
 
 .link {
   @apply
@@ -116,12 +141,26 @@ p {
   }
 }
 
+
+
+/**
+ * Images
+ *
+ */
+
 .image {
   @apply
     my-3
     max-w-[428px]
     w-full;
 }
+
+
+
+/**
+ * VCards
+ *
+ */
 
 .vcard {
   @apply
@@ -175,4 +214,53 @@ p {
       text-black
       no-underline;
   }
+}
+
+
+
+/**
+ * Preventions
+ *
+ */
+
+/* Prevents text from being highlighted */
+#body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#body.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Prevents images from being dragged */
+img {
+  pointer-events: none;
+}
+
+/* Print CSS: Prevents printing */
+@media print {
+  html, body {
+    visibility: hidden !important;
+    display: none !important;
+  }
+}
+
+/* Invisible overlay to prevent interactions */
+#body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 9999;
+  pointer-events: none;
 }

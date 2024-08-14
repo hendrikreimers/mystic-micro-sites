@@ -10,7 +10,7 @@
   <title>MysticMicroSite</title>
   <link rel="stylesheet" href="{{ baseUrl }}/microsite.css">
 </head>
-<body id="body" class="font-family__{{ fontFamily }}" style="background-color: {{ bgColor }}; color: {{ textColor }}">
+<body id="body" class="hidden font-family__{{ fontFamily }}" style="background-color: {{ bgColor }}; color: {{ textColor }}">
 <mms:comment>
   <!-- It's difficult to pass a JSON string into an attribute, i was bored so i made a workaounrd by adding pipe calls
   pipe calls are calling an php function before inserting the variable. eachPipe attribute reverse it before using it -->
@@ -45,17 +45,17 @@
         </div>
         <div class="vcard__details">
           <mms:if condition="'{{ element.element.companyName }}' !== ''">
-            <div class="details__companyName">
+            <div class="details__companyName prevent">
               <strong>{{ element.element.companyName }}</strong>
             </div>
           </mms:if>
           <mms:if condition="'{{ element.element.firstName }}' !== '' || '{{ element.element.lastName }}' !== ''">
-            <div class="details__firstName">
+            <div class="details__firstName prevent">
               <strong>{{ element.element.firstName }} {{ element.element.lastName }}</strong>
             </div>
           </mms:if>
           <mms:if condition="'{{ element.element.address }}' !== ''">
-            <div class="details__address">
+            <div class="details__address prevent">
               {{ element.element.address }}
             </div>
           </mms:if>
