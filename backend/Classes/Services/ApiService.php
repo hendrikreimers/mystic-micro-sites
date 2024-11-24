@@ -325,6 +325,9 @@ class ApiService {
         FileService::saveFileContent($filename, $encryptedData);
         FileService::saveFileContent($filename . '.h', $encryptedHeader);
 
+        // Send notification E-Mail if possible
+        MailService::sendNotification($url);
+
         // Return URL as result
         $this->response->setContent(json_encode(['url' => $url]));
       }

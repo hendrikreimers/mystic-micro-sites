@@ -38,6 +38,9 @@ class EnvConstantsHelper {
 
     define("VIEW_TIMELIMIT", $_ENV['VIEW_TIMELIMIT'] ?? 10);
     define("RELOAD_AFTER_MINUTES", $_ENV['RELOAD_AFTER_MINUTES'] ?? 3);
+
+    define("NOTIFICATION_EMAIL", $_ENV['NOTIFICATION_EMAIL'] ?? false);
+    define("NOTIFICATION_SUBJECT", $_ENV['NOTIFICATION_SUBJECT'] ?? '');
   }
 
 }

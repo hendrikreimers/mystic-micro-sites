@@ -150,6 +150,7 @@ Mystic Micro Sites is a secure and efficient platform for creating mini-websites
 
 - **Encryption Mechanisms**: Combines symmetric and asymmetric encryption to protect user data.
 - **Rate Limiting**: Basic rate limiting is implemented to prevent request abuse.
+- **Notification E-Mail**: You'll get a notification when a new site has been created.
 
 ## Use Cases
 

@@ -30,6 +30,8 @@ $USERNAME = trim(fgets(STDIN));
 echo "Enter base URL (like: https://your-site.com/path): ";
 $BASE_URL = trim(fgets(STDIN));
 $BASE_URL = ( $BASE_URL[strlen($BASE_URL) - 1] === '/' ) ? substr($BASE_URL, 0, -1) : $BASE_URL; // Remove ending Slash
+echo "Enter notification E-Mail: ";
+$NOTIFICATION_EMAIL = trim(fgets(STDIN));
 
 // Create public/private key pairs
 $keyPair = $encryptionService->generateKeyPair();
@@ -87,6 +89,9 @@ BASE_PATH=$BASE_DIR
 
 VIEW_TIMELIMIT=10
 RELOAD_AFTER_MINUTES=3
+
+NOTIFICATION_EMAIL=$NOTIFICATION_EMAIL
+NOTIFICATION_SUBJECT=MysticMicroSite-Created
 ";
 
 // Write .env file
